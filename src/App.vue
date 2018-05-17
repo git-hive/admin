@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <Toolbar @drawer-toggle="drawerIsVisible = !drawerIsVisible"/>
-    <NavigationDrawer :isVisible="drawerIsVisible"/>
+    <Toolbar @drawer-toggle="callToggleDrawer"/>
+    <NavigationDrawer ref="drawer" :menuItems="drawerMenuItems"/>
     <v-content>
       <v-container fluid fill-height>
         <router-view/>
@@ -22,8 +22,16 @@ export default {
   },
   data() {
     return {
-      drawerIsVisible: true
+      drawerMenuItems: [
+        { text: "Home", icon: "home", action: "/" },
+        { text: "About", icon: "contact_mail", action: "/about" }
+      ]
     };
+  },
+  methods: {
+    callToggleDrawer() {
+      this.$refs["drawer"].toggleDrawer();
+    }
   }
 };
 </script>

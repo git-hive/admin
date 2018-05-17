@@ -4,23 +4,17 @@
     v-model="isVisible"
     app
   >
-    <v-list dense>
-      <v-list-tile @click.stop="$router.push('/')">
-        <v-list-tile-action>
-          <v-icon>home</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>Home</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-      <v-list-tile @click.stop="$router.push('/about')">
-        <v-list-tile-action>
-          <v-icon>contact_mail</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>About</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
+    <v-list>
+      <div v-for="item in menuItems" :key="item.text">
+        <v-list-tile router :to="item.action">
+          <v-list-tile-action>
+            <v-icon>{{item.icon}}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>{{item.text}}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </div>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -28,6 +22,16 @@
 <script>
 export default {
   name: "NavigationDrawer",
-  props: ["isVisible"]
+  props: ["menuItems"],
+  data() {
+    return {
+      isVisible: true
+    };
+  },
+  methods: {
+    toggleDrawer() {
+      this.isVisible = !this.isVisible;
+    }
+  }
 };
 </script>
