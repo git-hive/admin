@@ -39,6 +39,7 @@ export default {
       snackBarTimeOut: 2000,
       drawerMenuItems: [
         { text: "Home", icon: "home", action: "/" },
+        { text: "Users", icon: "people", action: "/users" },
         { text: "About", icon: "contact_mail", action: "/about" }
       ]
     };

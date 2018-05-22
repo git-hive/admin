@@ -1,6 +1,16 @@
 <template>
   <v-container>
-    <p class="headline text-xs-center">Devs at work</p>
+    <v-list v-flex>
+      <v-list-tile v-for="user in users" :key="user.email" @click="null">
+        <v-list-tile-content>
+          <v-list-tile-title>{{user.email}}</v-list-tile-title>
+        </v-list-tile-content>
+
+        <v-list-tile-avatar>
+          <img :src="user.photoUrl">
+        </v-list-tile-avatar>
+      </v-list-tile>
+    </v-list>
   </v-container>
 </template>
 
@@ -16,8 +26,9 @@ export default {
       users: []
     };
   },
+
   mounted() {
-    this.fetchAndSetUsers()
+    this.fetchAndSetUsers();
   },
   computed: {
     ...mapState(["user"])
