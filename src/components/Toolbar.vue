@@ -28,5 +28,5 @@
 export default {
   name: "Toolbar",
   props: ["user"]
-}
+};
 </script>

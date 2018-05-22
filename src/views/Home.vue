@@ -20,26 +20,28 @@ import { getAllUserSnaps } from "@/firebase/firestore/users";
 import "firebase/firestore";
 import { firestore } from "firebase";
 
-  export default {
-    data() {
-      return {
-        users: []
-      }
-    },
-    mounted() {
-      this.fetchAndSetUsers()
-    },
-    computed: {
-      ...mapState(['user'])
-    },
-    methods: {
-      fetchAndSetUsers() {
-        getAllUserSnaps(firestore)
-          .then(users => { this.users = users.map(u => u.data()) })
-          .catch(err => {
-            throw new Error(err)
-          })
-      }
+export default {
+  data() {
+    return {
+      users: []
+    };
+  },
+  mounted() {
+    this.fetchAndSetUsers()
+  },
+  computed: {
+    ...mapState(["user"])
+  },
+  methods: {
+    fetchAndSetUsers() {
+      getAllUserSnaps(firestore)
+        .then(users => {
+          this.users = users.map(u => u.data());
+        })
+        .catch(err => {
+          throw new Error(err);
+        });
     }
   }
+};
 </script>
