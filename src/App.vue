@@ -6,7 +6,7 @@
       @sign-in="handleSignIn"
       @sign-out="handleSignOut"
     />
-    <NavigationDrawer ref="drawer" :menuItems="drawerMenuItems"/>
+    <NavigationDrawer ref="drawer" :menuItems="filteredDrawerMenuItems"/>
     <v-content>
       <v-container fluid fill-height>
         <router-view/>
@@ -25,6 +25,7 @@ import { mapState } from "vuex";
 import NavigationDrawer from "@/components/NavigationDrawer.vue";
 import Toolbar from "@/components/Toolbar.vue";
 import { signIn, signOut } from "@/firebase/auth";
+import { routeIsPublic } from "@/router/route-helpers";
 
 export default {
   name: "Hive",
@@ -45,7 +46,14 @@ export default {
     };
   },
   computed: {
-    ...mapState(["user"])
+    ...mapState(["user"]),
+    filteredDrawerMenuItems: function() {
+      if (this.user) {
+        return this.drawerMenuItems;
+      }
+
+      return this.drawerMenuItems.filter(item => routeIsPublic(item.action));
+    }
   },
   methods: {
     callToggleDrawer() {
@@ -63,10 +71,12 @@ export default {
     handleSignOut() {
       signOut()
         .then(() => {
+          this.$router.push("/");
           this.showSnackBar("Signed out!");
         })
-        .catch(() => {
+        .catch((e) => {
           this.showSnackBar("Failed to sign out");
+          throw new Error(e)
         });
     },
     showSnackBar(text) {

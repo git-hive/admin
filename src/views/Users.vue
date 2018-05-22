@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-list v-flex>
-      <v-list-tile v-for="user in users" :key="user.email" @click="null">
+      <v-list-tile v-for="user in users" :key="user.email" @click="() => {}">
         <v-list-tile-content>
           <v-list-tile-title>{{user.email}}</v-list-tile-title>
         </v-list-tile-content>
