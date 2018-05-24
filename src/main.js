@@ -9,8 +9,9 @@ import { auth } from "firebase";
 import App from "./App.vue";
 import router from "@/router/router";
 import store from "@/store/store";
+import colors from "@/config/colors";
 
-Vue.use(Vuetify);
+Vue.use(Vuetify, { theme: colors });
 
 Vue.config.productionTip = false;
 
