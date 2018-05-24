@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container elevation-4 class="pa-0">
     <v-list v-flex>
       <v-list-tile v-for="user in users" :key="user.email" @click="() => {}">
         <v-list-tile-content>
