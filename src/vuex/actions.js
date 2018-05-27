@@ -9,5 +9,9 @@ export default {
 
   setUserAssociations(context, associations) {
     context.commit("SET_USER_ASSOCIATIONS", associations);
+  },
+
+  setSelectedAssociation(context, association) {
+    context.commit("SET_SELECTED_ASSOCIATION", association);
   }
 };
