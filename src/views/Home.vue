@@ -7,8 +7,6 @@
 <script>
 import { mapState } from "vuex";
 import { getAllUserSnaps } from "@/firebase/firestore/users";
-import "firebase/firestore";
-import { firestore } from "firebase";
 
 export default {
   data() {
@@ -24,7 +22,7 @@ export default {
   },
   methods: {
     fetchAndSetUsers() {
-      getAllUserSnaps(firestore)
+      getAllUserSnaps()
         .then(users => {
           this.users = users.map(u => u.data());
         })

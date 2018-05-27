@@ -1,13 +1,13 @@
 <template>
   <v-container elevation-4 class="pa-0">
-    <v-list v-flex>
-      <v-list-tile v-for="user in users" :key="user.email" @click="() => {}">
+    <v-list>
+      <v-list-tile v-for="user in users" :key="user.id" @click="() => {}">
         <v-list-tile-content>
-          <v-list-tile-title>{{user.email}}</v-list-tile-title>
+          <v-list-tile-title>{{user.get("email")}}</v-list-tile-title>
         </v-list-tile-content>
 
         <v-list-tile-avatar>
-          <img :src="user.photoUrl">
+          <img :src="user.get('photoUrl')">
         </v-list-tile-avatar>
       </v-list-tile>
     </v-list>
@@ -17,8 +17,6 @@
 <script>
 import { mapState } from "vuex";
 import { getAllUserSnaps } from "@/firebase/firestore/users";
-import "firebase/firestore";
-import { firestore } from "firebase";
 
 export default {
   data() {
@@ -35,9 +33,9 @@ export default {
   },
   methods: {
     fetchAndSetUsers() {
-      getAllUserSnaps(firestore)
+      getAllUserSnaps()
         .then(users => {
-          this.users = users.map(u => u.data());
+          this.users = users;
         })
         .catch(err => {
           throw new Error(err);

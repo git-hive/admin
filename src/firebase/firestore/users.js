@@ -1,32 +1,39 @@
+import { firestore } from "firebase";
+
+const db = firestore();
 const USERS_COLLECTION = "users";
 
 /**
  * Gets the reference to users collection
- *
- * @param {firebase.Firestore} firestore
  */
-export function usersRef(firestore) {
-  return firestore().collection(USERS_COLLECTION);
+export function usersRef() {
+  return db.collection(USERS_COLLECTION);
 }
 
 /**
  * Gets the reference to a user
  *
- * @param {firebase.Firestore} firestore
  * @param {string} userID
  */
-export function userRef(firestore, userID) {
-  return usersRef(firestore).doc(userID);
+export function userRef(userID) {
+  return usersRef().doc(userID);
 }
 
 /**
- * Gets all User Snapshots
- *
- * @param {firebase.Firestore} firestore
+ * Fetches all User Snapshots
  */
-export async function getAllUserSnaps(firestore) {
-  const querySnap = await usersRef(firestore).get();
+export async function getAllUserSnaps() {
+  const querySnap = await usersRef().get();
   const docs = [];
   querySnap.forEach(doc => docs.push(doc));
   return docs;
+}
+
+/**
+ * Fetches a user document
+ *
+ * @param {String} userID
+ */
+export function getUserSnap(userID) {
+  return userRef(userID).get();
 }
