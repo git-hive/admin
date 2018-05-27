@@ -1,6 +1,7 @@
 import { auth } from "firebase";
 import store from "@/vuex/store";
 
+import { getUserSnap } from "@/firebase/firestore/users";
 const firebaseAuth = auth();
 const signInProvider = new auth.GoogleAuthProvider();
 
@@ -28,9 +29,22 @@ export function signOut() {
   return firebaseAuth.signOut();
 }
 
-export function setOnAuthStateChangedListener() {
-  auth().onAuthStateChanged(async user => {
-    if (user) {
+/**
+ * Sets up the 'OnAuthStateChanged' listener
+ */
+export async function setOnAuthStateChangedListener() {
+  auth().onAuthStateChanged(async authUser => {
+    if (authUser) {
+      const { uid, email, displayName } = authUser;
+      const userSnap = await getUserSnap(authUser.uid);
+      const user = {
+        uid,
+        email,
+        displayName,
+        ref: userSnap.ref,
+        ...userSnap.data()
+      };
+
       store.dispatch("setUser", user);
     } else {
       store.dispatch("unsetUser");
