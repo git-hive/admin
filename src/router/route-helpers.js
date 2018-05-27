@@ -1,4 +1,4 @@
-import store from "@/store/store";
+import store from "@/vuex/store";
 import publicRoutes from "@/router/public-routes";
 
 export function userIsLoggedIn() {

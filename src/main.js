@@ -8,7 +8,7 @@ import { auth } from "firebase";
 
 import App from "./App.vue";
 import router from "@/router/router";
-import store from "@/store/store";
+import store from "@/vuex/store";
 import colors from "@/config/colors";
 
 Vue.use(Vuetify, { theme: colors });
