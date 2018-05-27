@@ -41,7 +41,7 @@ export default {
       drawerMenuItems: [
         { text: "Home", icon: "home", action: "/" },
         { text: "Users", icon: "people", action: "/users" },
-        { text: "Associations", icon: "domain", action: "/associations" },
+        { text: "Association", icon: "domain", action: "/association" },
         { text: "About", icon: "contact_mail", action: "/about" }
       ]
     };
