@@ -6,6 +6,9 @@
   >
     <v-list>
       <AssociationSelect v-if="user"/>
+
+      <v-divider></v-divider>
+
       <div v-for="item in menuItems" :key="item.text">
         <v-list-tile router :to="item.action">
           <v-list-tile-action>
