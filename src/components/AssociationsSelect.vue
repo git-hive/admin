@@ -21,15 +21,23 @@ export default {
       selectedAssociationID: null
     };
   },
+  mounted() {
+    if (this.selectedAssociation) {
+      this.selectedAssociationID = this.selectedAssociation.id;
+    }
+  },
   watch: {
     selectedAssociationID(associationID) {
       let selected = this.userAssociations.find(a => a.id === associationID);
 
       this.setSelectedAssociation(selected);
+    },
+    selectedAssociation(association) {
+      this.selectedAssociationID = association.id;
     }
   },
   computed: {
-    ...mapState(["userAssociations"]),
+    ...mapState(["selectedAssociation", "userAssociations"]),
 
     associations: function() {
       return this.userAssociations.map(snap => ({
