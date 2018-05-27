@@ -2,6 +2,8 @@ import { auth } from "firebase";
 import store from "@/vuex/store";
 
 import { getUserSnap } from "@/firebase/firestore/users";
+import { getSnapsFromRefArray } from "@/firebase/firestore/helpers";
+
 const firebaseAuth = auth();
 const signInProvider = new auth.GoogleAuthProvider();
 
@@ -46,6 +48,11 @@ export async function setOnAuthStateChangedListener() {
       };
 
       store.dispatch("setUser", user);
+
+      const associations = await getSnapsFromRefArray(
+        Array.from(user.associationsRefs)
+      );
+      store.dispatch("setUserAssociations", associations);
     } else {
       store.dispatch("unsetUser");
     }
