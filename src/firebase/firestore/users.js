@@ -1,6 +1,7 @@
 import { firestore } from "firebase";
 
 const db = firestore();
+db.settings({ timestampsInSnapshots: true });
 const USERS_COLLECTION = "users";
 
 /**
