@@ -2,7 +2,8 @@
   <v-select
     :items="associations"
     item-text="name"
-    v-model="selectedAssociation"
+    item-value="id"
+    v-model="selectedAssociationID"
     label="Select your association"
     hint="Association"
     single-line
@@ -17,12 +18,14 @@ export default {
   name: "AssociationsSelect",
   data() {
     return {
-      selectedAssociation: null
+      selectedAssociationID: null
     };
   },
   watch: {
-    selectedAssociation() {
-      this.setSelectedAssociation(this.selectedAssociation);
+    selectedAssociationID(associationID) {
+      let selected = this.userAssociations.find(a => a.id === associationID);
+
+      this.setSelectedAssociation(selected);
     }
   },
   computed: {
@@ -31,8 +34,7 @@ export default {
     associations: function() {
       return this.userAssociations.map(snap => ({
         id: snap.id,
-        ref: snap.ref,
-        ...snap.data()
+        name: snap.get("name")
       }));
     }
   },

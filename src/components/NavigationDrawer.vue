@@ -5,6 +5,7 @@
     app
   >
     <v-list>
+      <AssociationSelect v-if="user"/>
       <div v-for="item in menuItems" :key="item.text">
         <v-list-tile router :to="item.action">
           <v-list-tile-action>
@@ -20,13 +21,22 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import AssociationSelect from "@/components/AssociationsSelect.vue";
+
 export default {
   name: "NavigationDrawer",
   props: ["menuItems"],
+  components: {
+    AssociationSelect
+  },
   data() {
     return {
       isVisible: true
     };
+  },
+  computed: {
+    ...mapState(["user"])
   },
   methods: {
     toggleDrawer() {
