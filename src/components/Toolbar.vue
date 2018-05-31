@@ -1,7 +1,7 @@
 <template>
   <v-toolbar color="primary" dark fixed app>
     <v-toolbar-side-icon @click.stop="$emit('drawer-toggle')"></v-toolbar-side-icon>
-    <v-toolbar-title>Hive</v-toolbar-title>
+    <v-toolbar-title>Hive {{nameComplement}}</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
       <v-btn
@@ -25,8 +25,19 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "Toolbar",
-  props: ["user"]
+  props: ["user"],
+  computed: {
+    ...mapState(["selectedAssociation"]),
+    nameComplement() {
+      if (this.selectedAssociation) {
+        return `+ ${this.selectedAssociation.get("name")}`;
+      }
+      return "";
+    }
+  }
 };
 </script>
