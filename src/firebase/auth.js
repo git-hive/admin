@@ -53,6 +53,7 @@ export async function setOnAuthStateChangedListener() {
         Array.from(user.associationsRefs)
       );
       store.dispatch("setUserAssociations", associations);
+      store.dispatch("setSelectedAssociation", associations[0]);
     } else {
       store.dispatch("unsetUser");
     }
