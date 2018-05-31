@@ -8,7 +8,7 @@
         <span>Create session</span>
       </v-tooltip>
 
-    <session-form/>
+    <session-form @submit="handleSubmit"/>
     </v-dialog>
 
 
@@ -32,6 +32,7 @@
 
 <script>
 import { mapState } from "vuex";
+import { addAssociationSession } from "@/firebase/firestore/associations/sessions";
 
 import SessionForm from "@/components/SessionForm.vue";
 
@@ -40,7 +41,20 @@ export default {
     SessionForm
   },
   computed: {
-    ...mapState(["selectedAssiciaton"])
+    ...mapState(["selectedAssociation"])
+  },
+  methods: {
+    handleSubmit({ startsAt, endsAt, isOrdinary, isGeneral }) {
+      addAssociationSession(this.selectedAssociation.id, {
+        ordinary: isOrdinary,
+        general: isGeneral,
+        startsAt: Number(startsAt),
+        endsAt: Number(endsAt),
+        agendasNum: 0,
+        associationRef: this.selectedAssociation.ref,
+        status: "current"
+      });
+    }
   }
 };
 </script>
