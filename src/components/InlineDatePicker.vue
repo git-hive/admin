@@ -14,6 +14,8 @@
       :label="label || 'Date'"
       prepend-icon="event"
       readonly
+      :rules="rules"
+      :required="required"
     ></v-text-field>
     <v-date-picker
       :value="date"
@@ -39,7 +41,12 @@
 export default {
   name: "inline-date-picker",
   model: { prop: "date", event: "input" },
-  props: { label: String, date: String },
+  props: {
+    label: String,
+    date: String,
+    required: Boolean,
+    rules: Array
+  },
   data: () => ({ modal: false })
 };
 </script>

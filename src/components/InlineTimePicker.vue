@@ -14,6 +14,8 @@
       :label="label || 'Time'"
       prepend-icon="access_time"
       readonly
+      :rules="rules"
+      :required="required"
     ></v-text-field>
     <v-time-picker
       v-bind:value="time"
@@ -39,7 +41,12 @@
 export default {
   name: "inline-time-picker",
   model: { prop: "time", event: "input" },
-  props: { label: String, time: String },
+  props: {
+    label: String,
+    time: String,
+    required: Boolean,
+    rules: Array
+  },
   data: () => ({ modal: false })
 };
 </script>
