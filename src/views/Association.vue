@@ -8,7 +8,7 @@
         <span>Create session</span>
       </v-tooltip>
 
-    <session-form @submit="handleSubmit"/>
+    <session-form :associationID="selectedAssociation.id" @submit="handleSubmit"/>
     </v-dialog>
 
 
@@ -29,7 +29,7 @@
                   {{formatDate(session.get('endsAt'))}}
                 </div>
                 <v-card>
-                  <v-card-test>
+                  <v-card-text>
                     <code>{{JSON.stringify({
                         status: session.get("status"),
                         agendasNum: session.get("agendasNum"),
@@ -38,7 +38,7 @@
                         startsAt: session.get("startsAt"),
                         endsAt: session.get("endsAt"),
                       }, null, 2)}}</code>
-                  </v-card-test>
+                  </v-card-text>
                 </v-card>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -54,9 +54,9 @@
                   {{formatDate(session.get('endsAt'))}}
                 </div>
                 <v-card>
-                  <v-card-test>
+                  <v-card-text>
                     <code>{{JSON.stringify({status: session.get("status")})}}</code>
-                  </v-card-test>
+                  </v-card-text>
                 </v-card>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -72,9 +72,9 @@
                   {{formatDate(session.get('endsAt'))}}
                 </div>
                 <v-card>
-                  <v-card-test>
+                  <v-card-text>
                     <code>{{JSON.stringify({status: session.get("status")})}}</code>
-                  </v-card-test>
+                  </v-card-text>
                 </v-card>
               </v-expansion-panel-content>
             </v-expansion-panel>
