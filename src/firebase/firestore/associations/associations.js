@@ -2,7 +2,9 @@ import { firestore } from "firebase";
 
 const db = firestore();
 db.settings({ timestampsInSnapshots: true });
+
 const ASSOCIATIONS_COLLECTION = "associations";
+const REQUESTS_COLLECTION = "requests";
 
 /**
  * Gets the reference to associations collection
@@ -37,4 +39,22 @@ export async function getAllAssociationSnaps() {
  */
 export function getAssociationSnap(associationID) {
   return associationRef(associationID).get();
+}
+
+/**
+ * Gets the reference to the association requests collection
+ *
+ * @param {String} associationID Self descriptive
+ */
+export function getAssociationRequestsCol(associationID) {
+  return associationRef(associationID).collection(REQUESTS_COLLECTION);
+}
+
+/**
+ * Fetches all requests snaps from the association
+ *
+ * @param {String} associationID Self descriptive
+ */
+export function getAssociationRequestSnaps(associationID) {
+  return getAssociationRequestsCol(associationID).get();
 }
