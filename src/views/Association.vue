@@ -24,7 +24,10 @@
                 v-for="session in currentSessions"
                 :key="session.id"
               >
-                <div slot="header">{{session.id}}</div>
+                <div slot="header">
+                  {{formatDate( session.get('startsAt') )}} -
+                  {{formatDate(session.get('endsAt'))}}
+                </div>
                 <v-card>
                   <v-card-test>
                     <code>{{JSON.stringify({
@@ -46,7 +49,10 @@
                 v-for="session in futureSessions"
                 :key="session.id"
               >
-                <div slot="header">{{session.id}}</div>
+                <div slot="header">
+                  {{formatDate( session.get('startsAt') )}} -
+                  {{formatDate(session.get('endsAt'))}}
+                </div>
                 <v-card>
                   <v-card-test>
                     <code>{{JSON.stringify({status: session.get("status")})}}</code>
@@ -61,7 +67,10 @@
                 v-for="session in endedSessions"
                 :key="session.id"
               >
-                <div slot="header">{{session.id}}</div>
+                <div slot="header">
+                  {{formatDate( session.get('startsAt') )}} -
+                  {{formatDate(session.get('endsAt'))}}
+                </div>
                 <v-card>
                   <v-card-test>
                     <code>{{JSON.stringify({status: session.get("status")})}}</code>
@@ -147,6 +156,10 @@ export default {
           }
         });
       });
+    },
+    formatDate(timestamp) {
+      const d = new Date(timestamp);
+      return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
     }
   }
 };
