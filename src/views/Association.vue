@@ -5,14 +5,16 @@
         <v-btn slot="activator" color="primary" fixed fab bottom right>
           <v-icon>add</v-icon>
         </v-btn>
-        <span>Create session</span>
+        <span v-if="this.active_tabs == 0">Create session</span>
+        <span v-if="this.active_tabs == 2">Create report</span>
       </v-tooltip>
 
-    <session-form :associationID="selectedAssociation.id" @submit="handleSubmit"/>
+    <session-form  v-if="this.active_tabs == 0" :associationID="selectedAssociation.id" @submit="handleSubmit"/>
+    <report-form v-if="this.active_tabs == 2" @submit="handleReportSubmit"/>
+
     </v-dialog>
 
-
-    <v-tabs fixed-tabs>
+    <v-tabs @input="selectForm" fixerefd-tabs>
       <v-tab>Sessions</v-tab>
       <v-tab-item>
         <v-card flat>
@@ -89,6 +91,13 @@
           <v-card-text>qwer</v-card-text>
         </v-card>
       </v-tab-item>
+
+      <v-tab>Reports</v-tab>
+      <v-tab-item>
+        <v-card flat>
+          <v-card-text>Report</v-card-text>
+        </v-card>
+      </v-tab-item>
     </v-tabs>
   </v-container>
 </template>
@@ -101,14 +110,17 @@ import {
 } from "@/firebase/firestore/associations/sessions";
 
 import SessionForm from "@/components/SessionForm.vue";
+import ReportForm from "@/components/ReportForm.vue";
 
 export default {
   name: "Association",
   components: {
-    SessionForm
+    SessionForm,
+    ReportForm
   },
   data: () => ({
-    sessions: []
+    sessions: [],
+    active_tabs: 0
   }),
   computed: {
     ...mapState(["selectedAssociation"]),
@@ -160,6 +172,21 @@ export default {
     formatDate(timestamp) {
       const d = new Date(timestamp);
       return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+    },
+    handleReportSubmit({ description, startsAt, endsAt, isShowing }) {
+      alert(description, startsAt, endsAt, isShowing);
+      // addAssociationReport(this.selectedAssociation.id, {
+      //   duration: duration,
+      //   startsAt: Number(startsAt),
+      //   endsAt: Number(endsAt),
+      //   isShowing: isShowing,
+      //   associationRef: this.selectedAssociation.ref,
+      //   status: "current"
+      // });
+    },
+    selectForm (a) {
+      console.log(this);
+      this.active_tabs = a;
     }
   }
 };
