@@ -2,8 +2,8 @@ import Vue from "vue";
 import Router from "vue-router";
 import Home from "@/views/Home.vue";
 import Users from "@/views/Users.vue";
-import Association from "@/views/Association.vue";
 import Sessions from "@/views/association/Sessions.vue";
+import Reports from "@/views/association/Reports.vue";
 import About from "@/views/About.vue";
 import { routeIsPublic, userIsLoggedIn } from "./route-helpers";
 
@@ -22,14 +22,14 @@ const router = new Router({
       component: Users
     },
     {
-      path: "/association",
-      name: "association",
-      component: Association
-    },
-    {
       path: "/association/sessions",
       name: "association.sessions",
       component: Sessions
+    },
+    {
+      path: "/association/reports",
+      name: "association.reports",
+      component: Reports
     },
     {
       path: "/about",
