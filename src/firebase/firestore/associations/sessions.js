@@ -2,6 +2,8 @@ import { firestore } from "firebase";
 
 import { associationRef } from "./associations";
 
+import { addAgendasToSession } from "@/firebase/firestore/associations/agendas";
+
 const db = firestore();
 db.settings({ timestampsInSnapshots: true });
 const SESSIONS_COLLECTION = "sessions";
@@ -52,4 +54,21 @@ export function getAssociationSessionSnap(associationID, sessionID) {
  */
 export function addAssociationSession(associationID, session) {
   return sessionsRef(associationID).add(session);
+}
+
+/**
+ * Creates a new association session and add the agendas to it
+ *
+ * @param {String} associationID Self descriptive
+ * @param {Object} session New session data
+ * @param {[{title: String, Content: String}]} agendas New session agendas
+ */
+export async function addAssociationSessionWithAgendas(
+  associationID,
+  session,
+  agendas
+) {
+  console.log(session, agendas);
+  const newSessionRef = await addAssociationSession(associationID, session);
+  addAgendasToSession(newSessionRef, agendas);
 }
