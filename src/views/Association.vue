@@ -108,14 +108,11 @@
 <script>
 import { mapState } from "vuex";
 import {
-  addAssociationSession,
+  addAssociationSessionWithAgendas,
   sessionsRef
 } from "@/firebase/firestore/associations/sessions";
 
-import {
-  addAssociationReport,
-  reportsRef
-} from "@/firebase/firestore/associations/reports";
+import { addAssociationReport } from "@/firebase/firestore/associations/reports";
 
 import SessionForm from "@/components/SessionForm.vue";
 import ReportForm from "@/components/ReportForm.vue";
@@ -146,16 +143,20 @@ export default {
     this.addAssociationsSnapListener();
   },
   methods: {
-    handleSubmit({ startsAt, endsAt, isOrdinary, isGeneral }) {
-      addAssociationSession(this.selectedAssociation.id, {
-        ordinary: isOrdinary,
-        general: isGeneral,
-        startsAt: Number(startsAt),
-        endsAt: Number(endsAt),
-        agendasNum: 0,
-        associationRef: this.selectedAssociation.ref,
-        status: "current"
-      });
+    handleSubmit({ startsAt, endsAt, isOrdinary, isGeneral, agendas }) {
+      addAssociationSessionWithAgendas(
+        this.selectedAssociation.id,
+        {
+          ordinary: isOrdinary,
+          general: isGeneral,
+          startsAt: Number(startsAt),
+          endsAt: Number(endsAt),
+          agendasNum: agendas.length,
+          associationRef: this.selectedAssociation.ref,
+          status: "current"
+        },
+        agendas
+      );
     },
     addAssociationsSnapListener() {
       sessionsRef(this.selectedAssociation.id).onSnapshot(snapshot => {

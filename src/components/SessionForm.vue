@@ -114,7 +114,7 @@ export default {
     isOrdinary: false,
     agendas: [],
     snackbar: false,
-    snackbarText: "",
+    snackBarText: "",
     startDateRules: [
       v => !!v | "Start Date is required",
       v =>
@@ -142,13 +142,8 @@ export default {
           agendas: this.agendas
         });
 
-        this.clear();
-      } else {
-        this.isValid = false;
+        this.$refs.form.reset();
       }
-    },
-    clear() {
-      this.$refs.form.reset();
     },
     getDate(date, time) {
       const [year, month, day] = date.split("-");
