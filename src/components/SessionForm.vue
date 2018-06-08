@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      <span class="headline">Session</span>
+      <span class="headline">Create Session</span>
     </v-card-title>
     <v-card-text>
       <v-container grid-list-md>
@@ -60,22 +60,49 @@
               ></v-switch>
             </v-flex>
           </v-layout>
-          <v-btn @click="submit">Submit</v-btn>
+
+          <span class="headline">Agendas</span>
+
+          <v-expansion-panel class="my-4">
+            <v-expansion-panel-content
+              v-for="(agenda, i) in agendas"
+              :key="i"
+            >
+              <div slot="header">{{agenda.title}}</div>
+              <v-card>
+                <v-card-text>{{agenda.content}}</v-card-text>
+                <v-btn color="error" @click="removeAgenda(i)">Remove agenda</v-btn>
+              </v-card>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+
+          <agenda-form
+            @submit="handleAgendaSubmit"
+          ></agenda-form>
+
+          <v-btn @click="submit" class="mt-5">Create session</v-btn>
         </v-form>
       </v-container>
     </v-card-text>
+
+    <v-snackbar class="my-5 mx-5" v-model="snackbar" right>
+      {{snackBarText}}
+      <v-btn flat color="pink" @click.native="snackbar = false">Close</v-btn>
+    </v-snackbar>
   </v-card>
 </template>
 
 <script>
 import InlineDatePicker from "@/components/InlineDatePicker.vue";
 import InlineTimePicker from "@/components/InlineTimePicker.vue";
+import AgendaForm from "@/components/AgendaForm.vue";
 
 export default {
   name: "SessionForm",
   components: {
     InlineDatePicker,
-    InlineTimePicker
+    InlineTimePicker,
+    AgendaForm
   },
   data: () => ({
     isValid: false,
@@ -85,6 +112,9 @@ export default {
     endsAtTime: null,
     isGeneral: false,
     isOrdinary: false,
+    agendas: [],
+    snackbar: false,
+    snackbarText: "",
     startDateRules: [
       v => !!v | "Start Date is required",
       v =>
@@ -98,13 +128,21 @@ export default {
   }),
   methods: {
     submit() {
+      if (this.agendas.length === 0) {
+        this.showSnackBar("Add an agenda first");
+        return;
+      }
+
       if (this.$refs.form.validate()) {
         this.$emit("submit", {
           startsAt: this.getDate(this.startsAtDate, this.startsAtTime),
           endsAt: this.getDate(this.endsAtDate, this.endsAtTime),
           isGeneral: this.isGeneral,
-          isOrdinary: this.isOrdinary
+          isOrdinary: this.isOrdinary,
+          agendas: this.agendas
         });
+
+        this.clear();
       } else {
         this.isValid = false;
       }
@@ -117,6 +155,16 @@ export default {
       const [hour, minute] = time.split(":");
 
       return new Date(year, month, day, hour, minute);
+    },
+    handleAgendaSubmit(agenda) {
+      this.agendas.push(agenda);
+    },
+    removeAgenda(i) {
+      this.agendas.splice(i, 1);
+    },
+    showSnackBar(text) {
+      this.snackBarText = text;
+      this.snackbar = true;
     }
   }
 };
