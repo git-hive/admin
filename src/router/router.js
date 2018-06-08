@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Home from "@/views/Home.vue";
 import Users from "@/views/Users.vue";
 import Association from "@/views/Association.vue";
+import Sessions from "@/views/association/Sessions.vue";
 import About from "@/views/About.vue";
 import { routeIsPublic, userIsLoggedIn } from "./route-helpers";
 
@@ -24,6 +25,11 @@ const router = new Router({
       path: "/association",
       name: "association",
       component: Association
+    },
+    {
+      path: "/association/sessions",
+      name: "association.sessions",
+      component: Sessions
     },
     {
       path: "/about",

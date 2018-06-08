@@ -45,7 +45,7 @@ export default {
           text: "Association",
           icon: "domain",
           subItems: [
-            { text: "Sessions", icon: "", action: "/association" },
+            { text: "Sessions", icon: "", action: "/association/sessions" },
             { text: "Reports", icon: "", action: "/association" }
           ]
         },
