@@ -5,16 +5,19 @@
         <v-btn slot="activator" color="primary" fixed fab bottom right>
           <v-icon>add</v-icon>
         </v-btn>
-        <span v-if="this.active_tabs == 0">Create session</span>
-        <span v-if="this.active_tabs == 2">Create report</span>
+        <span v-if="active_tabs == 0">Create session</span>
+        <span v-if="active_tabs == 2">Create report</span>
       </v-tooltip>
 
-    <session-form  v-if="this.active_tabs == 0" :associationID="selectedAssociation.id" @submit="handleSubmit"/>
-    <report-form v-if="this.active_tabs == 2" @submit="handleReportSubmit"/>
+    <session-form
+      v-if="active_tabs == 0"
+      :associationID="selectedAssociation.id"
+      @submit="handleSubmit" />
+    <report-form v-if="active_tabs == 2" @submit="handleReportSubmit"/>
 
     </v-dialog>
 
-    <v-tabs @input="selectForm" fixerefd-tabs>
+    <v-tabs @input="selectForm" fixed-tabs>
       <v-tab>Sessions</v-tab>
       <v-tab-item>
         <v-card flat>
@@ -187,8 +190,7 @@ export default {
         associationRef: this.selectedAssociation.ref
       });
     },
-    selectForm (a) {
-      console.log(this);
+    selectForm(a) {
       this.active_tabs = a;
     }
   }
