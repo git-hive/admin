@@ -78,6 +78,7 @@ export default {
     submit() {
       if (this.$refs.form.validate()) {
         this.$emit("submit", {
+          description: this.description,
           startsAt: this.getDate(this.startsAtDate),
           endsAt: this.getDate(this.endsAtDate),
           isShowing: this.isShowing,
