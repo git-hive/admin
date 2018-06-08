@@ -41,7 +41,14 @@ export default {
       drawerMenuItems: [
         { text: "Home", icon: "home", action: "/" },
         { text: "Users", icon: "people", action: "/users" },
-        { text: "Association", icon: "domain", action: "/association" },
+        {
+          text: "Association",
+          icon: "domain",
+          subItems: [
+            { text: "Sessions", icon: "", action: "/association" },
+            { text: "Reports", icon: "", action: "/association" }
+          ]
+        },
         { text: "About", icon: "contact_mail", action: "/about" }
       ]
     };
@@ -75,9 +82,9 @@ export default {
           this.$router.push("/");
           this.showSnackBar("Signed out!");
         })
-        .catch((e) => {
+        .catch(e => {
           this.showSnackBar("Failed to sign out");
-          throw new Error(e)
+          throw new Error(e);
         });
     },
     showSnackBar(text) {
