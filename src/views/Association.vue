@@ -109,6 +109,11 @@ import {
   sessionsRef
 } from "@/firebase/firestore/associations/sessions";
 
+import {
+  addAssociationReport,
+  reportsRef
+} from "@/firebase/firestore/associations/reports";
+
 import SessionForm from "@/components/SessionForm.vue";
 import ReportForm from "@/components/ReportForm.vue";
 
@@ -174,15 +179,13 @@ export default {
       return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
     },
     handleReportSubmit({ description, startsAt, endsAt, isShowing }) {
-      alert(description, startsAt, endsAt, isShowing);
-      // addAssociationReport(this.selectedAssociation.id, {
-      //   duration: duration,
-      //   startsAt: Number(startsAt),
-      //   endsAt: Number(endsAt),
-      //   isShowing: isShowing,
-      //   associationRef: this.selectedAssociation.ref,
-      //   status: "current"
-      // });
+      addAssociationReport(this.selectedAssociation.id, {
+        description: description,
+        showing: isShowing,
+        startsAt: Number(startsAt),
+        endsAt: Number(endsAt),
+        associationRef: this.selectedAssociation.ref
+      });
     },
     selectForm (a) {
       console.log(this);
