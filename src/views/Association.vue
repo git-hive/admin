@@ -97,9 +97,13 @@
 
       <v-tab>Reports</v-tab>
       <v-tab-item>
-        <v-card flat>
-          <v-card-text>Report</v-card-text>
-        </v-card>
+          <v-list>
+            <v-list-tile v-for="report in reports" :key="report.id" @click="() => {}">
+              <v-list-tile-content>
+                <v-list-tile-title>{{report.get("description")}}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </v-list>
       </v-tab-item>
     </v-tabs>
   </v-container>
@@ -112,7 +116,10 @@ import {
   sessionsRef
 } from "@/firebase/firestore/associations/sessions";
 
-import { addAssociationReport } from "@/firebase/firestore/associations/reports";
+import { 
+  addAssociationReport, 
+  getAllAssociationReportSnaps 
+} from "@/firebase/firestore/associations/reports";
 
 import SessionForm from "@/components/SessionForm.vue";
 import ReportForm from "@/components/ReportForm.vue";
@@ -125,7 +132,8 @@ export default {
   },
   data: () => ({
     sessions: [],
-    active_tabs: 0
+    active_tabs: 0,
+    reports: []
   }),
   computed: {
     ...mapState(["selectedAssociation"]),
@@ -141,6 +149,7 @@ export default {
   },
   mounted() {
     this.addAssociationsSnapListener();
+    this.fetchReportsAndSet();
   },
   methods: {
     handleSubmit({ startsAt, endsAt, isOrdinary, isGeneral, agendas }) {
@@ -193,6 +202,15 @@ export default {
     },
     selectForm(a) {
       this.active_tabs = a;
+    },
+    fetchReportsAndSet(){
+      getAllAssociationReportSnaps(this.selectedAssociation.id)
+        .then(reports => {
+            this.reports = reports;
+          })
+          .catch(err => {
+            throw new Error(err);
+          });
     }
   }
 };
