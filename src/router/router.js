@@ -4,6 +4,7 @@ import Home from "@/views/Home.vue";
 import Users from "@/views/Users.vue";
 import Sessions from "@/views/association/Sessions.vue";
 import Reports from "@/views/association/Reports.vue";
+import Files from "@/views/association/Files.vue";
 import About from "@/views/About.vue";
 import { routeIsPublic, userIsLoggedIn } from "./route-helpers";
 
@@ -30,6 +31,11 @@ const router = new Router({
       path: "/association/reports",
       name: "association.reports",
       component: Reports
+    },
+    {
+      path: "/association/files",
+      name: "association.files",
+      component: Files
     },
     {
       path: "/about",
