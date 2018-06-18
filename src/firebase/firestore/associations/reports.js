@@ -28,8 +28,8 @@ export function reportRef(associationID, reportID) {
 /**
  * Fetches all Association Report Snapshots
  */
-export async function getAllAssociationReportSnaps() {
-  const querySnap = await reportsRef().get();
+export async function getAllAssociationReportSnaps(associationID) {
+  const querySnap = await reportsRef(associationID).get();
   const docs = [];
   querySnap.forEach(doc => docs.push(doc));
   return docs;

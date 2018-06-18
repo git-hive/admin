@@ -15,9 +15,13 @@
     <v-tabs @input="selectForm" fixed-tabs>
       <v-tab>Reports</v-tab>
       <v-tab-item>
-        <v-card flat>
-          <v-card-text>Report</v-card-text>
-        </v-card>
+        <v-list>
+          <v-list-tile v-for="report in reports" :key="report.id" @click="() => {}">
+            <v-list-tile-content>
+              <v-list-tile-title>{{report.get("description")}}</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
       </v-tab-item>
     </v-tabs>
   </v-container>
@@ -25,16 +29,24 @@
 
 <script>
 import { mapState } from "vuex";
-import { addAssociationReport } from "@/firebase/firestore/associations/reports";
+import {
+  addAssociationReport,
+  getAllAssociationReportSnaps
+} from "@/firebase/firestore/associations/reports";
 
 import ReportForm from "@/components/ReportForm.vue";
 
 export default {
   name: "reports",
   components: { ReportForm },
-  data: () => ({}),
+  data: () => ({
+    reports: []
+  }),
   computed: {
     ...mapState(["selectedAssociation"])
+  },
+  mounted() {
+    this.fetchReportsAndSet();
   },
   methods: {
     handleReportSubmit({ description, startsAt, endsAt, isShowing }) {
@@ -45,6 +57,10 @@ export default {
         endsAt: Number(endsAt),
         associationRef: this.selectedAssociation.ref
       });
+    },
+    async fetchReportsAndSet() {
+      this.reports =
+        await getAllAssociationReportSnaps(this.selectedAssociation.id)
     }
   }
 };
