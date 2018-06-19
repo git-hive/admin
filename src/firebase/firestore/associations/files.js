@@ -30,7 +30,10 @@ export function fileRef(associationID, fileID) {
  * * @param {String} associationID
  */
 export async function getAllAssociationFileSnaps(associationID) {
-  return await filesRef(associationID).get(); 
+  const querySnap = await filesRef(associationID).get();
+  const docs = [];
+  querySnap.forEach(doc => docs.push(doc));
+  return docs;
 }
 
 /**

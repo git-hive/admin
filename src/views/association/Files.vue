@@ -1,6 +1,6 @@
 <template>
   <v-container elevation-4 class="pa-0">
-    <v-dialog>
+    <v-dialog v-model="dialog">
       <v-tooltip slot="activator" left>
         <v-btn slot="activator" color="primary" fixed fab bottom right>
           <v-icon>add</v-icon>
@@ -8,7 +8,7 @@
         <span>Upload file</span>
       </v-tooltip>
 
-    <file-form @submit="handleFileUpload"/>
+      <file-form @submit="handleFileUpload"/>
 
     </v-dialog>
 
@@ -40,7 +40,8 @@ export default {
   name: "files",
   components: { FileForm },
   data: () => ({
-    files: []
+    files: [],
+    dialog: false
   }),
   computed: {
     ...mapState(["selectedAssociation"])
@@ -51,6 +52,8 @@ export default {
   methods: {
     handleFileUpload({ file, file_name }) {
       uploadAssociationFile(file, file_name, this.selectedAssociation.id);
+      this.fetchFilesAndSet();
+      this.dialog = false;
     },
     async fetchFilesAndSet() {
       this.files = await getAllAssociationFileSnaps(this.selectedAssociation.id);
