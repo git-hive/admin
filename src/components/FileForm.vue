@@ -32,7 +32,6 @@
 export default {
   name: "FileForm",
   data: () => ({
-    // isValid: false,
     file: File,
     file_name: ""
   }),
@@ -49,6 +48,7 @@ export default {
           file_name: this.file_name
         });
       }
+      this.clear();
     },
     clear() {
       this.$refs.form.reset();
