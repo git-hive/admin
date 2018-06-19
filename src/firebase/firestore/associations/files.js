@@ -18,7 +18,6 @@ export function filesRef(associationID) {
 
 /**
  * Gets the reference to a file
- *
  * @param {String} associationID
  * @param {String} fileID
  */
@@ -28,17 +27,14 @@ export function fileRef(associationID, fileID) {
 
 /**
  * Fetches all Association Files Snapshots
+ * * @param {String} associationID
  */
 export async function getAllAssociationFileSnaps(associationID) {
-  const querySnap = await filesRef(associationID).get();
-  const docs = [];
-  querySnap.forEach(doc => docs.push(doc));
-  return docs;
+  return await filesRef(associationID).get(); 
 }
 
 /**
  * Fetches a association file document
- *
  * @param {String} associationID
  * @param {String} fileID
  */
@@ -47,12 +43,12 @@ export function getAssociationFileSnap(associationID, fileID) {
 }
 
 /**
- *
+ * Add file to association
  * @param {String} associationID
  * @param {Object} file
  */
 export async function addAssociationFile(associationID, file) {
-  return await filesRef(associationID).add(file);
+  return filesRef(associationID).add(file);
 }
 
 /**
@@ -67,7 +63,7 @@ export async function getAssociationFileID(associationID, file) {
 }
 
 /**
- *
+ * Delete association file
  * @param {String} associationID
  * @param {Object} fileID
  */
@@ -76,7 +72,7 @@ export function deleteAssociationFile(associationID, fileID) {
 }
 
 /**
- *
+ * Upload file to firebase storage and add it to association
  * @param {File} file_uploade
  * @param {String} file_name
  * @param {String} associationID
@@ -93,7 +89,7 @@ export async function uploadAssociationFile(file_uploaded, file_name, associatio
   var metadata = { contentType: "application/pdf" };
 
   // Set full path into Firebase Storage
-  var full_path = associationID + "/" + storage_file_name + ".pdf";
+  var full_path = `${associationID}/${storage_file_name}.pdf`;
   
   // Upload file and metadata to the object 'full_path'
   var uploadTask = storageRef
@@ -103,15 +99,15 @@ export async function uploadAssociationFile(file_uploaded, file_name, associatio
   // Listen for state changes, errors, and completion of the upload.
   uploadTask.on(
     storage.TaskEvent.STATE_CHANGED,
-    function(snapshot) {
+    snapshot => {
       // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
       var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log("Upload is " + progress + "% done");
+      console.log(`Upload is ${progress}% done`);
       switch (snapshot.state) {
-        case storage.TaskState.PAUSED: // or 'paused'
+        case storage.TaskState.PAUSED:
           console.log("Upload is paused");
           break;
-        case storage.TaskState.RUNNING: // or 'running'
+        case storage.TaskState.RUNNING:
           console.log("Upload is running");
           break;
       }
