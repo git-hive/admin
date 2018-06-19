@@ -46,13 +46,13 @@ export default {
     ...mapState(["selectedAssociation"])
   },
   mounted() {
-    this.fetchFilessAndSet();
+    this.fetchFilesAndSet();
   },
   methods: {
     handleFileUpload({ file, file_name }) {
       uploadAssociationFile(file, file_name, this.selectedAssociation.id);
     },
-    async fetchFilessAndSet() {
+    async fetchFilesAndSet() {
       this.files = await getAllAssociationFileSnaps(this.selectedAssociation.id);
     }
   }
