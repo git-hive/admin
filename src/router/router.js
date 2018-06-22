@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "@/views/Home.vue";
+import MemberRequests from "@/views/MemberRequests.vue";
 import Users from "@/views/Users.vue";
 import Sessions from "@/views/association/Sessions.vue";
 import Reports from "@/views/association/Reports.vue";
@@ -16,6 +17,11 @@ const router = new Router({
       path: "/",
       name: "home",
       component: Home
+    },
+    {
+      path: "/member-requests",
+      name: "mamberRequests",
+      component: MemberRequests
     },
     {
       path: "/users",
