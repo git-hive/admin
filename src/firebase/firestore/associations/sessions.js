@@ -29,9 +29,11 @@ export function sessionRef(associationID, sessionID) {
 
 /**
  * Fetches all Association Session Snapshots
+ *
+ * @param {String} associationID Self descriptive
  */
-export async function getAllAssociationSessionSnaps() {
-  const querySnap = await sessionsRef().get();
+export async function getAllAssociationSessionSnaps(associatonID) {
+  const querySnap = await sessionsRef(associatonID).get();
   const docs = [];
   querySnap.forEach(doc => docs.push(doc));
   return docs;
