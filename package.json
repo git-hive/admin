@@ -9,19 +9,19 @@
     "deploy": "firebase deploy --only hosting"
   },
   "dependencies": {
-    "firebase": "^5.0.2",
-    "register-service-worker": "^1.0.0",
+    "firebase": "^5.1.0",
+    "register-service-worker": "^1.4.1",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1",
-    "vuetify": "^1.0.18",
+    "vuetify": "^1.0.19",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.0-beta.10",
-    "@vue/cli-plugin-eslint": "^3.0.0-beta.10",
-    "@vue/cli-plugin-pwa": "^3.0.0-beta.10",
-    "@vue/cli-service": "^3.0.0-beta.10",
-    "@vue/eslint-config-prettier": "^3.0.0-beta.10",
+    "@vue/cli-plugin-babel": "^3.0.0-rc.3",
+    "@vue/cli-plugin-eslint": "^3.0.0-rc.3",
+    "@vue/cli-plugin-pwa": "^3.0.0-rc.3",
+    "@vue/cli-service": "^3.0.0-rc.3",
+    "@vue/eslint-config-prettier": "^3.0.0-rc.3",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.6",
     "vue-template-compiler": "^2.5.13"
