@@ -19,7 +19,7 @@
           </tr>
 
           <tr>
-            <td class="body-2">Data da requisição:</td>
+            <td class="body-2">Data da solicitação:</td>
             <td>{{(new Date(memberRequest.get("date"))).toLocaleString()}}</td>
           </tr>
         </tbody>
