@@ -1,23 +1,23 @@
 <template>
-  <v-form ref="agendaForm">
+  <v-form ref="questionOptionForm">
     <v-text-field
       v-model="title"
-      label="Title"
+      label="Título"
       required
     ></v-text-field>
     <v-text-field
       v-model="content"
-      label="Content"
+      label="Subtítulo"
       multi-line
       required
     ></v-text-field>
-    <v-btn @click="submit">add agenda</v-btn>
+    <v-btn @click="submit">Adicionar opção</v-btn>
   </v-form>
 </template>
 
 <script>
 export default {
-  name: "agenda-form",
+  name: "question-options-form",
   data: () => ({
     isValid: false,
     title: "",
@@ -27,11 +27,10 @@ export default {
     submit() {
       this.$emit("submit", {
         title: this.title,
-        content: this.content,
-        questionsNum: 0
+        content: this.content
       });
 
-      this.$refs.agendaForm.reset();
+      this.$refs.questionOptionForm.reset();
     }
   }
 };
