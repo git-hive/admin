@@ -20,6 +20,21 @@
             <v-list-tile-content>
               <v-list-tile-title>{{file.get("name")}}</v-list-tile-title>
             </v-list-tile-content>
+            <v-list-tile-action>
+              <v-dialog v-model="delete_dialog" persistent max-width="290">
+                <v-btn slot="activator" color="red" dark>Deletar
+                  <v-icon dark right>delete</v-icon>
+                </v-btn>
+                <v-card>
+                  <v-card-title class="headline">Tem certeza que quer deletar o arquivo?</v-card-title>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red darken-1" flat @click="deleteFile({fileID: file.id})">Deletar</v-btn>
+                    <v-btn color="green darken-1" flat @click.native="delete_dialog = false">Cancelar</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-list-tile-action>
           </v-list-tile>
         </v-list>
       </v-tab-item>
@@ -31,7 +46,8 @@
 import { mapState } from "vuex";
 import {
   getAllAssociationFileSnaps,
-  uploadAssociationFile
+  uploadAssociationFile,
+  deleteAssociationFile
 } from "@/firebase/firestore/associations/files";
 
 import FileForm from "@/components/FileForm.vue";
@@ -41,7 +57,8 @@ export default {
   components: { FileForm },
   data: () => ({
     files: [],
-    dialog: false
+    dialog: false,
+    delete_dialog: false
   }),
   computed: {
     ...mapState(["selectedAssociation"])
@@ -57,6 +74,11 @@ export default {
     },
     async fetchFilesAndSet() {
       this.files = await getAllAssociationFileSnaps(this.selectedAssociation.id);
+    },
+    async deleteFile({fileID}){
+      deleteAssociationFile(this.selectedAssociation.id, fileID);
+      this.fetchFilesAndSet();
+      this.delete_dialog = false;
     }
   }
 };

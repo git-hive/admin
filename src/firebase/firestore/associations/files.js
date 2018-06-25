@@ -66,13 +66,47 @@ export async function getAssociationFileID(associationID, file) {
 }
 
 /**
- * Delete association file
+ * Delete association file in firebase database
  * @param {String} associationID
  * @param {Object} fileID
  */
-export function deleteAssociationFile(associationID, fileID) {
-  return filesRef(associationID).delete(fileID);
+export async function deleteDatabaseFile(associationID, fileID) {
+  return filesRef(associationID).doc(fileID).delete()
+    .then(() => {
+      console.log('The file was deleted')
+    }).catch((error) => {
+      console.error('Was not possible to delete file', error)
+    });
 }
+
+/**
+ * Delete file from storage
+ * @param {String} associationID
+ * @param {String} storage_file_name
+ */
+export async function deleteStorageFile(associationID, storage_file_name) {
+  // Set full path into Firebase Storage
+  var full_path = `${associationID}/${storage_file_name}.pdf`;
+
+  // Delte 'full_path' file
+  return storageRef.child(full_path).delete()
+    .then(() => {
+      console.log('The file was deleted')
+    }).catch((error) => {
+      console.error('Was not possible to delete file', error)
+    }); 
+}
+
+/**
+ * Delete association file and the storage
+ * @param {String} associationID
+ * @param {String} fileID
+ */
+export async function deleteAssociationFile(associationID, fileID) {
+  await deleteDatabaseFile(associationID, fileID);
+  await deleteStorageFile(associationID, fileID);
+}
+
 
 /**
  * Upload file to firebase storage and add it to association
