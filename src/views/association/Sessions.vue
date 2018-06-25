@@ -1,16 +1,20 @@
-
 <template>
   <v-container elevation-4 class="pa-0">
-    <v-dialog>
-      <v-tooltip slot="activator" left>
-        <v-btn slot="activator" color="primary" fixed fab bottom right>
-          <v-icon>add</v-icon>
-        </v-btn>
-        <span>Create session</span>
-      </v-tooltip>
-
-      <session-form @submit="handleSubmit"/>
-    </v-dialog>
+    <v-tooltip left>
+      <v-btn
+        router
+        to="/association/sessions/new"
+        slot="activator"
+        color="primary"
+        fixed
+        fab
+        bottom
+        right
+      >
+        <v-icon>add</v-icon>
+      </v-btn>
+      <span>Criar assembléia</span>
+    </v-tooltip>
 
     <v-tabs fixed-tabs v-model="tab">
 
@@ -33,7 +37,9 @@
                   </div>
                   <v-card>
                     <v-card-text>
-                      <code>{{JSON.stringify({status: session.get("status")})}}</code>
+                      <code>
+                        {{JSON.stringify({status: session.get("status")})}}
+                      </code>
                     </v-card-text>
                   </v-card>
                 </v-expansion-panel-content>
@@ -87,7 +93,9 @@
                   </div>
                   <v-card>
                     <v-card-text>
-                      <code>{{JSON.stringify({status: session.get("status")})}}</code>
+                      <code>
+                        {{JSON.stringify({status: session.get("status")})}}
+                      </code>
                     </v-card-text>
                   </v-card>
                 </v-expansion-panel-content>
@@ -108,11 +116,8 @@ import {
   sessionsRef
 } from "@/firebase/firestore/associations/sessions";
 
-import SessionForm from "@/components/SessionForm.vue";
-
 export default {
   name: "session",
-  components: { SessionForm },
   data: () => ({ sessions: [], tab: "current" }),
   computed: {
     ...mapState(["selectedAssociation"]),

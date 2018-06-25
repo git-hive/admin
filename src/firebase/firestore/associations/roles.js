@@ -23,6 +23,9 @@ export function getAssociationRolesRef(associationID) {
  * @param {String} associationID Self descriptive
  * @returns {Promise<[firestore.DocumentSnapshot]>}
  */
-export function getAllAssociationRolesSnaps(associationID) {
-  return getAssociationRolesRef(associationID).get();
+export async function getAllAssociationRolesDocs(associationID) {
+  const docs = [];
+  const snaps = await getAssociationRolesRef(associationID).get();
+  snaps.forEach(doc => docs.push(doc));
+  return docs;
 }

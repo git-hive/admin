@@ -42,6 +42,11 @@ export default {
         { text: "Home", icon: "home", action: "/" },
         { text: "Users", icon: "people", action: "/users" },
         {
+          text: "Solicitações de Membros",
+          icon: "supervised_user_circle",
+          action: "/member-requests"
+        },
+        {
           text: "Association",
           icon: "domain",
           subItems: [
