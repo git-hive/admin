@@ -4,6 +4,7 @@ import Home from "@/views/Home.vue";
 import MemberRequests from "@/views/MemberRequests.vue";
 import Users from "@/views/Users.vue";
 import Sessions from "@/views/association/Sessions.vue";
+import NewSession from "@/views/association/NewSession.vue";
 import Reports from "@/views/association/Reports.vue";
 import Files from "@/views/association/Files.vue";
 import About from "@/views/About.vue";
@@ -32,6 +33,11 @@ const router = new Router({
       path: "/association/sessions",
       name: "association.sessions",
       component: Sessions
+    },
+    {
+      path: "/association/sessions/new",
+      name: "association.sessions.new",
+      component: NewSession
     },
     {
       path: "/association/reports",
