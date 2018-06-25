@@ -1,6 +1,6 @@
 <template>
   <v-flex>
-    <h1 class="subheading ml-2">Tópicos</h1>
+    <h1 v-if="questions.length !== 0" class="subheading ml-2">Tópicos</h1>
     <v-expansion-panel v-for="(question, i) in questions" :key="i">
       <v-expansion-panel-content>
         <v-list slot="header">
