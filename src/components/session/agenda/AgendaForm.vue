@@ -12,7 +12,12 @@
       required
     ></v-text-field>
 
-    <questions-list :questions="questions"></questions-list>
+    <questions-list
+      :questions="questions"
+      show-action="true"
+      action-icon="delete"
+      @actionClick="removeQuestion"
+    ></questions-list>
 
     <v-btn @click="submit">Adicionar Pauta</v-btn>
 
@@ -50,6 +55,9 @@ export default {
 
       this.questions = [];
       this.$refs.agendaForm.reset();
+    },
+    removeQuestion(index) {
+      this.questions.splice(index, 1);
     }
   }
 };
