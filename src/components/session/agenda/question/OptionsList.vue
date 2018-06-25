@@ -7,6 +7,12 @@
         <v-list-tile-title>{{option.title}}</v-list-tile-title>
         <v-list-tile-sub-title>{{option.content}}</v-list-tile-sub-title>
       </v-list-tile-content>
+      <v-list-tile-action
+        v-if="showAction"
+        @click="$emit('actionClick', i)"
+      >
+        <v-icon>{{actionIcon}}</v-icon>
+      </v-list-tile-action>
     </v-list-tile>
   </v-list>
 </template>
@@ -14,6 +20,6 @@
 <script>
 export default {
   name: "options-list",
-  props: ["options"]
+  props: ["options", "showAction", "actionIcon"]
 };
 </script>

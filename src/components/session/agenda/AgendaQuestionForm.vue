@@ -12,7 +12,12 @@
       required
     ></v-text-field>
 
-    <options-list :options="options"></options-list>
+    <options-list
+      :options="options"
+      show-action="true"
+      action-icon="delete"
+      @actionClick="removeOption"
+    ></options-list>
 
     <v-btn @click="submit">Adicionar tópico</v-btn>
 
@@ -50,6 +55,9 @@ export default {
     },
     addOption(option) {
       this.options.push(option);
+    },
+    removeOption(index) {
+      this.options.splice(index, 1);
     }
   }
 };
