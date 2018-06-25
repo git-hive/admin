@@ -2,7 +2,7 @@
   <v-container>
     <v-card>
       <v-card-title>
-        <span class="headline">Create Session</span>
+        <span class="headline">Criar assembléia</span>
       </v-card-title>
       <v-card-text>
         <v-container grid-list-md>
@@ -10,7 +10,7 @@
             <v-layout row wrap>
               <v-flex xs12 sm6>
                 <inline-date-picker
-                  label="Start Date"
+                  label="Data de início"
                   v-model="startsAtDate"
                   :rules="startDateRules"
                   required
@@ -18,9 +18,9 @@
               </v-flex>
               <v-flex xs12 sm6>
                 <inline-time-picker
-                  label="Start time"
+                  label="Horário de início"
                   v-model="startsAtTime"
-                  :rules="[v => !!v || 'Start Time is required']"
+                  :rules="[v => !!v || 'Campo obrigatório']"
                   required
                 />
               </v-flex>
@@ -29,7 +29,7 @@
             <v-layout row wrap>
               <v-flex xs12 sm6>
                 <inline-date-picker
-                  label="End Date"
+                  label="Data de término"
                   v-model="endsAtDate"
                   :rules="endDateRules"
                   required
@@ -37,9 +37,9 @@
               </v-flex>
               <v-flex xs12 sm6>
                 <inline-time-picker
-                  label="End time"
+                  label="Horário de término"
                   v-model="endsAtTime"
-                  :rules="[v => !!v || 'End Time is required']"
+                  :rules="[v => !!v || 'Campo obrigatório']"
                   required
                 />
               </v-flex>
@@ -48,40 +48,44 @@
             <v-layout row wrap>
               <v-flex xs12 sm6>
                 <v-switch
-                  label="General"
+                  label="Geral"
                   v-model="isGeneral"
                   required
                 ></v-switch>
               </v-flex>
               <v-flex xs12 sm6>
                 <v-switch
-                  label="Ordinary"
+                  label="Ordinária"
                   v-model="isOrdinary"
                   required
                 ></v-switch>
               </v-flex>
             </v-layout>
 
-            <span class="headline">Agendas</span>
+            <h1 class="headline">Pautas</h1>
 
             <v-expansion-panel class="my-4">
               <v-expansion-panel-content
                 v-for="(agenda, i) in agendas"
                 :key="i"
               >
-                <div slot="header">{{agenda.title}}</div>
+                <div slot="header">
+                  <h3>{{agenda.title}}</h3>
+                </div>
                 <v-card>
                   <v-card-text>{{agenda.content}}</v-card-text>
-                  <v-btn color="error" @click="removeAgenda(i)">Remove agenda</v-btn>
+                  <questions-list :questions="agenda.questions">
+                  </questions-list>
+                  <v-btn color="error" @click="removeAgenda(i)">
+                    Remover pauta
+                  </v-btn>
                 </v-card>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
-            <agenda-form
-              @submit="handleAgendaSubmit"
-            ></agenda-form>
+            <agenda-form @submit="handleAgendaSubmit"></agenda-form>
 
-            <v-btn type="submit" class="mt-5">Create session</v-btn>
+            <v-btn type="submit" class="mt-5">Criar assembléia</v-btn>
           </v-form>
         </v-container>
       </v-card-text>
@@ -97,14 +101,16 @@
 <script>
 import InlineDatePicker from "@/components/InlineDatePicker.vue";
 import InlineTimePicker from "@/components/InlineTimePicker.vue";
-import AgendaForm from "@/components/AgendaForm.vue";
+import AgendaForm from "@/components/session/agenda/AgendaForm.vue";
+import QuestionsList from "@/components/session/agenda/question/QuestionsList.vue";
 
 export default {
   name: "session-form",
   components: {
     InlineDatePicker,
     InlineTimePicker,
-    AgendaForm
+    AgendaForm,
+    QuestionsList
   },
   data: () => ({
     isValid: false,
@@ -118,14 +124,16 @@ export default {
     snackbar: false,
     snackBarText: "",
     startDateRules: [
-      v => !!v | "Start Date is required",
+      v => !!v | "Campo obrigatório",
       v =>
-        (!!v && new Date(v.split("-")) > new Date()) || "Should be after today"
+        (!!v && new Date(v.split("-")) > new Date()) ||
+        "Deve ser depois de hoje"
     ],
     endDateRules: [
-      v => !!v || "End date id required",
+      v => !!v || "Campo obrigatório",
       v =>
-        (!!v && new Date(v.split("-")) > new Date()) || "Should be after today"
+        (!!v && new Date(v.split("-")) > new Date()) ||
+        "Deve ser depois de hoje"
     ]
   }),
   methods: {
