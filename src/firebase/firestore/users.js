@@ -49,7 +49,7 @@ export function getUserSnap(userID) {
  */
 export async function addAssociationToUser(userID, associationRef) {
   const user = await getUserSnap(userID);
-  const associationsRefs = user.get("associationsRefs");
+  const associationsRefs = user.get("associationsRefs") || [];
   associationsRefs.push(associationRef);
   user.ref.set({ associationsRefs }, { merge: true });
 }
