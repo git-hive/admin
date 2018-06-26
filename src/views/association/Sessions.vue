@@ -111,10 +111,7 @@
 
 <script>
 import { mapState } from "vuex";
-import {
-  addAssociationSessionWithAgendas,
-  sessionsRef
-} from "@/firebase/firestore/associations/sessions";
+import { sessionsRef } from "@/firebase/firestore/associations/sessions";
 
 export default {
   name: "session",
@@ -135,21 +132,6 @@ export default {
     this.addAssociationsSnapListener();
   },
   methods: {
-    handleSubmit({ startsAt, endsAt, isOrdinary, isGeneral, agendas }) {
-      addAssociationSessionWithAgendas(
-        this.selectedAssociation.id,
-        {
-          ordinary: isOrdinary,
-          general: isGeneral,
-          startsAt: Number(startsAt),
-          endsAt: Number(endsAt),
-          agendasNum: agendas.length,
-          associationRef: this.selectedAssociation.ref,
-          status: "current"
-        },
-        agendas
-      );
-    },
     addAssociationsSnapListener() {
       sessionsRef(this.selectedAssociation.id).onSnapshot(snapshot => {
         snapshot.docChanges().forEach(change => {
