@@ -1,8 +1,8 @@
 import { firestore } from "firebase";
 
 import { associationRef } from "./associations";
-
-import { addAgendasToSession } from "@/firebase/firestore/associations/agendas";
+import { agendasRef } from "./agendas";
+import { questionsRef, optionsRef } from "./questions";
 
 const db = firestore();
 db.settings({ timestampsInSnapshots: true });
@@ -50,27 +50,38 @@ export function getAssociationSessionSnap(associationID, sessionID) {
 }
 
 /**
- *
- * @param {String} associationID
- * @param {Object} session
- */
-export function addAssociationSession(associationID, session) {
-  return sessionsRef(associationID).add(session);
-}
-
-/**
  * Creates a new association session and add the agendas to it
  *
  * @param {String} associationID Self descriptive
  * @param {Object} session New session data
- * @param {[{title: String, Content: String}]} agendas New session agendas
  */
-export async function addAssociationSessionWithAgendas(
-  associationID,
-  session,
-  agendas
-) {
-  console.log(session, agendas);
-  const newSessionRef = await addAssociationSession(associationID, session);
-  addAgendasToSession(newSessionRef, agendas);
+export async function addAssociationSession(associationID, session) {
+  console.log("[addAssociationSession]", session);
+
+  const agendas = cutOut(session, "agendas");
+
+  const newSessionRef = await sessionsRef(associationID).add(session);
+  const agendasColRef = agendasRef(newSessionRef);
+
+  agendas.forEach(async agenda => {
+    const questions = cutOut(agenda, "questions");
+    const newAgendaRef = await agendasColRef.add(agenda);
+    const questionsColRef = questionsRef(newAgendaRef);
+
+    questions.forEach(async question => {
+      const options = cutOut(question, "options");
+      const newQuestionRef = await questionsColRef.add(question);
+      const optionsColRef = optionsRef(newQuestionRef);
+
+      options.forEach(async option => {
+        await optionsColRef.add(option);
+      });
+    });
+  });
+}
+
+function cutOut(obj, key) {
+  const value = obj[key];
+  delete obj[key];
+  return value;
 }
