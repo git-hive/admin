@@ -99,10 +99,12 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import InlineDatePicker from "@/components/InlineDatePicker.vue";
 import InlineTimePicker from "@/components/InlineTimePicker.vue";
 import AgendaForm from "@/components/session/agenda/AgendaForm.vue";
 import QuestionsList from "@/components/session/agenda/question/QuestionsList.vue";
+import { addAssociationSession } from "../../firebase/firestore/associations/sessions";
 
 export default {
   name: "session-form",
@@ -136,24 +138,35 @@ export default {
         "Deve ser depois de hoje"
     ]
   }),
+  computed: {
+    ...mapState(["selectedAssociation"]),
+  },
   methods: {
     submit() {
+      if (!this.$refs.form.validate()) return;
       if (this.agendas.length === 0) {
         this.showSnackBar("Add an agenda first");
         return;
       }
 
-      if (this.$refs.form.validate()) {
-        this.$emit("submit", {
-          startsAt: this.getDate(this.startsAtDate, this.startsAtTime),
-          endsAt: this.getDate(this.endsAtDate, this.endsAtTime),
-          isGeneral: this.isGeneral,
-          isOrdinary: this.isOrdinary,
-          agendas: this.agendas
-        });
+      const startsAt = this.getDate(this.startsAtDate, this.startsAtTime);
+      const endsAt = this.getDate(this.endsAtDate, this.endsAtTime);
+      const isGeneral = this.isGeneral;
+      const isOrdinary = this.isOrdinary;
+      const agendas = this.agendas;
 
-        this.$refs.form.reset();
-      }
+      addAssociationSession(this.selectedAssociation.id, {
+        ordinary: isOrdinary,
+        general: isGeneral,
+        startsAt: Number(startsAt),
+        endsAt: Number(endsAt),
+        agendasNum: agendas.length,
+        associationRef: this.selectedAssociation.ref,
+        status: "current",
+        agendas
+      });
+
+      this.$refs.form.reset();
     },
     getDate(date, time) {
       const [year, month, day] = date.split("-");
