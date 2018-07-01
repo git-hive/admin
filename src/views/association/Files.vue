@@ -9,7 +9,25 @@
       </v-tooltip>
 
       <file-form @submit="handleFileUpload"/>
+      
+    </v-dialog>
 
+    <v-dialog
+      v-model="progress_bar"
+      hide-overlay
+      persistent
+      width="300"
+    >
+      <v-card color="primary" dark>
+        <v-card-text>
+          Realizando upload do arquivo
+          <v-progress-linear
+            indeterminate
+            color="white"
+            class="mb-0"
+          ></v-progress-linear>
+        </v-card-text>
+      </v-card>
     </v-dialog>
 
     <v-tabs fixed-tabs>
@@ -58,7 +76,8 @@ export default {
   data: () => ({
     files: [],
     dialog: false,
-    delete_dialog: false
+    delete_dialog: false,
+    progress_bar: false
   }),
   computed: {
     ...mapState(["selectedAssociation"])
@@ -67,10 +86,12 @@ export default {
     this.fetchFilesAndSet();
   },
   methods: {
-    handleFileUpload({ file, file_name }) {
-      uploadAssociationFile(file, file_name, this.selectedAssociation.id);
-      this.fetchFilesAndSet();
+    async handleFileUpload({ file, file_name }) {
       this.dialog = false;
+      this.progress_bar = true;
+      await uploadAssociationFile(file, file_name, this.selectedAssociation.id);
+      this.fetchFilesAndSet();
+      this.progress_bar = false; 
     },
     async fetchFilesAndSet() {
       this.files = await getAllAssociationFileSnaps(this.selectedAssociation.id);
