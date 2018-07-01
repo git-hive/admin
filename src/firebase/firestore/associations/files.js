@@ -147,8 +147,7 @@ export async function deleteAssociationFile(associationID, fileID) {
 export async function uploadAssociationFile(
   file_uploaded,
   file_name,
-  associationID,
-  progress_value
+  associationID
 ) {
   var storage_file_name = guid();
 
@@ -161,38 +160,19 @@ export async function uploadAssociationFile(
   // Upload file and metadata to the object 'full_path'
   var uploadTask = storageRef.child(full_path).put(file_uploaded, metadata);
 
-  // Listen for state changes, errors, and completion of the upload.
-  await uploadTask.on(
-    storage.TaskEvent.STATE_CHANGED,
-    snapshot => {
-      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      progress_value = progress;
-      console.log(`Upload is ${progress}% done`); 
-      switch (snapshot.state) {
-        case storage.TaskState.PAUSED:
-          console.log("Upload is paused");
-          break;
-        case storage.TaskState.RUNNING:
-          console.log("Upload is running");
-          break;
-      }
-    },
-    error => {
-      alert("SOMETHING GOES WRONG DURING FILE UPLOAD");
-      console.error("Error during file uploading", error);
-    },
+  return await uploadTask.then(
     () => {
+      console.log("Upload successfully!");
       // Upload completed successfully, now we add file to database
-      addAssociationFile(
+      return addAssociationFile(
         associationID,
         { name: file_name, createdAt: Number(new Date()) },
         storage_file_name
       );
-      // We can get the download URL
-      uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-        console.log("File available at", downloadURL);
-      });
+    },
+    error => {
+      alert("SOMETHING GOES WRONG DURING FILE UPLOAD");
+      console.error("Error during file uploading", error);
     }
-  );
+  )
 }
