@@ -1,6 +1,6 @@
 <template>
   <v-container elevation-4 class="pa-0">
-    <v-dialog>
+    <v-dialog v-model="dialog">
       <v-tooltip slot="activator" left>
         <v-btn slot="activator" color="primary" fixed fab bottom right>
           <v-icon>add</v-icon>
@@ -12,7 +12,7 @@
 
     </v-dialog>
 
-    <v-tabs @input="selectForm" fixed-tabs>
+    <v-tabs fixed-tabs>
       <v-tab>Reports</v-tab>
       <v-tab-item>
         <v-list>
@@ -40,6 +40,7 @@ export default {
   name: "reports",
   components: { ReportForm },
   data: () => ({
+    dialog: false,
     reports: []
   }),
   computed: {
@@ -49,14 +50,16 @@ export default {
     this.fetchReportsAndSet();
   },
   methods: {
-    handleReportSubmit({ description, startsAt, endsAt, isShowing }) {
-      addAssociationReport(this.selectedAssociation.id, {
+    async handleReportSubmit({ description, startsAt, endsAt, isShowing }) {
+      await addAssociationReport(this.selectedAssociation.id, {
         description: description,
         showing: isShowing,
         startsAt: Number(startsAt),
         endsAt: Number(endsAt),
         associationRef: this.selectedAssociation.ref
       });
+      this.fetchReportsAndSet();
+      this.dialog = false;
     },
     async fetchReportsAndSet() {
       this.reports =
