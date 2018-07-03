@@ -46,10 +46,11 @@ export function getUserSnap(userID) {
  *
  * @param {String} userID Self descriptive
  * @param {firestore.DocumentReference} associationRef Self descriptive
+ * @param {firestore.DocumentReference} roleRef Self descriptive
  */
-export async function addAssociationToUser(userID, associationRef) {
+export async function addAssociationToUser(userID, associationRef, roleRef) {
   const user = await getUserSnap(userID);
-  const associationsRefs = user.get("associationsRefs") || [];
-  associationsRefs.push(associationRef);
-  user.ref.set({ associationsRefs }, { merge: true });
+  const associations = user.get("associations") || [];
+  associations.push({ associationRef, roleRef });
+  user.ref.set({ associations }, { merge: true });
 }

@@ -50,7 +50,7 @@ export async function setOnAuthStateChangedListener() {
       store.dispatch("setUser", user);
 
       const associations = await getSnapsFromRefArray(
-        Array.from(user.associationsRefs)
+        Array.from(user.associations.map(a => a.associationRef))
       );
       store.dispatch("setUserAssociations", associations);
       store.dispatch("setSelectedAssociation", associations[0]);

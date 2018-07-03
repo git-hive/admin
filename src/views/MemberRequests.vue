@@ -82,7 +82,11 @@ export default {
         return;
       }
 
-      addAssociationToUser(requestID, this.selectedAssociation.ref);
+      addAssociationToUser(
+        requestID,
+        this.selectedAssociation.ref,
+        this.getRoleByID(this.selectedRole).ref
+      );
       this.deleteRequest(requestID);
     },
     async deleteRequest(requestID) {
