@@ -8,6 +8,24 @@ db.settings({ timestampsInSnapshots: true });
 const FILES_COLLECTION = "files";
 
 /**
+ * Generates GUID code to file name
+ */
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return (
+    s4() + s4() + "-" +
+    s4() + "-" +
+    s4() + "-" +
+    s4() + "-" +
+    s4() + s4() + s4()
+  );
+}
+
+/**
  * Gets the reference to files collection
  * @param {String} associationID association document ID where to
  *                               get the files from
@@ -50,8 +68,14 @@ export function getAssociationFileSnap(associationID, fileID) {
  * @param {String} associationID
  * @param {Object} file
  */
-export async function addAssociationFile(associationID, file) {
-  return filesRef(associationID).add(file);
+export async function addAssociationFile(associationID, file, fileID = null) {
+  if (fileID) {
+    return filesRef(associationID)
+      .doc(fileID)
+      .set(file);
+  } else {
+    return filesRef(associationID).add(file);
+  }
 }
 
 /**
@@ -60,8 +84,9 @@ export async function addAssociationFile(associationID, file) {
  * @param {Object} file
  */
 export async function getAssociationFileID(associationID, file) {
-  var file = await addAssociationFile(associationID, file)
-    .then(doc => {return doc.id})  
+  var file = await addAssociationFile(associationID, file).then(doc => {
+    return doc.id;
+  });
   return file;
 }
 
@@ -71,11 +96,14 @@ export async function getAssociationFileID(associationID, file) {
  * @param {Object} fileID
  */
 export async function deleteDatabaseFile(associationID, fileID) {
-  return filesRef(associationID).doc(fileID).delete()
+  return filesRef(associationID)
+    .doc(fileID)
+    .delete()
     .then(() => {
-      console.log('The file was deleted')
-    }).catch((error) => {
-      console.error('Was not possible to delete file', error)
+      console.log("The file was deleted");
+    })
+    .catch(error => {
+      console.error("Was not possible to delete file", error);
     });
 }
 
@@ -89,12 +117,15 @@ export async function deleteStorageFile(associationID, storage_file_name) {
   var full_path = `${associationID}/${storage_file_name}.pdf`;
 
   // Delte 'full_path' file
-  return storageRef.child(full_path).delete()
+  return storageRef
+    .child(full_path)
+    .delete()
     .then(() => {
-      console.log('The file was deleted')
-    }).catch((error) => {
-      console.error('Was not possible to delete file', error)
-    }); 
+      console.log("The file was deleted");
+    })
+    .catch(error => {
+      console.error("Was not possible to delete file", error);
+    });
 }
 
 /**
@@ -107,58 +138,41 @@ export async function deleteAssociationFile(associationID, fileID) {
   await deleteStorageFile(associationID, fileID);
 }
 
-
 /**
  * Upload file to firebase storage and add it to association
  * @param {File} file_uploade
  * @param {String} file_name
  * @param {String} associationID
  */
-export async function uploadAssociationFile(file_uploaded, file_name, associationID) {
-
-  // Get file name after added in association files
-  var storage_file_name = await getAssociationFileID(associationID, {
-    name: file_name,
-    createdAt: Number(new Date())
-  });
+export async function uploadAssociationFile(
+  file_uploaded,
+  file_name,
+  associationID
+) {
+  var storage_file_name = guid();
 
   // Create the file metadata
   var metadata = { contentType: "application/pdf" };
 
   // Set full path into Firebase Storage
   var full_path = `${associationID}/${storage_file_name}.pdf`;
-  
-  // Upload file and metadata to the object 'full_path'
-  var uploadTask = storageRef
-    .child(full_path)
-    .put(file_uploaded, metadata);
 
-  // Listen for state changes, errors, and completion of the upload.
-  uploadTask.on(
-    storage.TaskEvent.STATE_CHANGED,
-    snapshot => {
-      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log(`Upload is ${progress}% done`);
-      switch (snapshot.state) {
-        case storage.TaskState.PAUSED:
-          console.log("Upload is paused");
-          break;
-        case storage.TaskState.RUNNING:
-          console.log("Upload is running");
-          break;
-      }
+  // Upload file and metadata to the object 'full_path'
+  var uploadTask = storageRef.child(full_path).put(file_uploaded, metadata);
+
+  return await uploadTask.then(
+    () => {
+      console.log("Upload successfully!");
+      // Upload completed successfully, now we add file to database
+      return addAssociationFile(
+        associationID,
+        { name: file_name, createdAt: Number(new Date()) },
+        storage_file_name
+      );
     },
     error => {
-      deleteAssociationFile(associationID, storage_file_name.id);
-      alert('SOMETHING GOES WRONG DURING FILE UPLOAD');
-      console.error('Error during file uploading', error)
-    },
-    () => {
-      // Upload completed successfully, now we can get the download URL
-      uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-        console.log("File available at", downloadURL);
-      });
+      alert("SOMETHING GOES WRONG DURING FILE UPLOAD");
+      console.error("Error during file uploading", error);
     }
-  );
+  )
 }
