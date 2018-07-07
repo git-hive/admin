@@ -68,15 +68,7 @@ export async function addAssociationSession(associationID, session) {
     const newAgendaRef = await agendasColRef.add(agenda);
     const questionsColRef = questionsRef(newAgendaRef);
 
-    questions.forEach(async question => {
-      const options = cutOut(question, "options");
-      const newQuestionRef = await questionsColRef.add(question);
-      const optionsColRef = optionsRef(newQuestionRef);
-
-      options.forEach(async option => {
-        await optionsColRef.add(option);
-      });
-    });
+    questions.forEach(async question => questionsColRef.add(question));
   });
 }
 
