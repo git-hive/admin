@@ -60,8 +60,8 @@ export async function setOnAuthStateChangedListener() {
       const associationsWhereUserIsAdmin = (await getSnapsFromRefArray(
         user.associations.map(a => a.roleRef)
       ))
-        .filter(role => role.get("key") === "admin")
-        .map(role => role.parent); // role is an association child
+        .filter(roleSnap => roleSnap.get("key") === "admin")
+        .map(roleSnap => roleSnap.ref.parent.parent); // Association ref
 
       if (associationsWhereUserIsAdmin.length > 0) {
         const associations = await getSnapsFromRefArray(
