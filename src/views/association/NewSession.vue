@@ -162,7 +162,7 @@ export default {
         endsAt: Number(endsAt),
         agendasNum: agendas.length,
         associationRef: this.selectedAssociation.ref,
-        status: "current",
+        status: "future",
         agendas
       });
 
