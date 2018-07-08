@@ -60,7 +60,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["user"]),
+    ...mapState(["user", "associations"]),
     filteredDrawerMenuItems: function() {
       if (this.user) {
         return this.drawerMenuItems;
@@ -76,7 +76,15 @@ export default {
     handleSignIn() {
       signIn()
         .then(() => {
-          this.showSnackBar("Signed in!");
+          if (!this.user) {
+            this.showSnackBar(
+              "Usuário não encontrado. Cadastre-se no app primeiro!"
+            );
+          } else if (!this.associations || this.associations.length === 0) {
+            this.showSnackBar("Você não é administrador em nenhuma associação");
+          } else {
+            this.showSnackBar("Signed in!");
+          }
         })
         .catch(() => {
           this.showSnackBar("Failed to sign in");

@@ -37,8 +37,16 @@ export function signOut() {
 export async function setOnAuthStateChangedListener() {
   auth().onAuthStateChanged(async authUser => {
     if (authUser) {
+      // Extract data from auth
       const { uid, email, displayName } = authUser;
-      const userSnap = await getUserSnap(authUser.uid);
+
+      // Get user from firestore
+      const userSnap = await getUserSnap(uid);
+
+      // Check if the user has already been registered
+      if (!userSnap.exists) return;
+
+      // Join auth and firestore data
       const user = {
         uid,
         email,
@@ -47,13 +55,23 @@ export async function setOnAuthStateChangedListener() {
         ...userSnap.data()
       };
 
-      store.dispatch("setUser", user);
+      // Gets roles, filter them by key='admin' and then get the association
+      // ref by calling role.parent
+      const associationsWhereUserIsAdmin = (await getSnapsFromRefArray(
+        user.associations.map(a => a.roleRef)
+      ))
+        .filter(role => role.get("key") === "admin")
+        .map(role => role.parent); // role is an association child
 
-      const associations = await getSnapsFromRefArray(
-        Array.from(user.associations.map(a => a.associationRef))
-      );
-      store.dispatch("setUserAssociations", associations);
-      store.dispatch("setSelectedAssociation", associations[0]);
+      if (associationsWhereUserIsAdmin.length > 0) {
+        const associations = await getSnapsFromRefArray(
+          associationsWhereUserIsAdmin
+        );
+
+        store.dispatch("setUser", user);
+        store.dispatch("setUserAssociations", associations);
+        store.dispatch("setSelectedAssociation", associations[0]);
+      }
     } else {
       store.dispatch("unsetUser");
     }
