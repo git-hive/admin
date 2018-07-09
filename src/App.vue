@@ -39,7 +39,7 @@ export default {
       snackBarText: "",
       snackBarTimeOut: 2000,
       drawerMenuItems: [
-        { text: "Home", icon: "home", action: "/" },
+        { text: "Início", icon: "home", action: "/" },
         { text: "Users", icon: "people", action: "/users" },
         {
           text: "Solicitações de Membros",
@@ -47,15 +47,38 @@ export default {
           action: "/member-requests"
         },
         {
-          text: "Association",
-          icon: "domain",
+          text: "Votações",
+          icon: "how_to_vote",
           subItems: [
-            { text: "Sessions", icon: "", action: "/association/sessions" },
-            { text: "Reports", icon: "", action: "/association/reports" },
-            { text: "Files", icon: "", action: "/association/files" }
+            {
+              text: "Passadas",
+              icon: "",
+              action: "/association/sessions/ended"
+            },
+            {
+              text: "Correntes",
+              icon: "",
+              action: "/association/sessions/current"
+            },
+            {
+              text: "Futuras",
+              icon: "",
+              action: "/association/sessions/future"
+            },
+            {
+              text: "Nova Votação",
+              icon: "",
+              action: "/association/sessions/new"
+            }
           ]
         },
-        { text: "About", icon: "contact_mail", action: "/about" }
+        {
+          text: "Avisos",
+          icon: "announcement",
+          action: "/association/reports"
+        },
+        { text: "Arquivos", icon: "folder", action: "/association/files" },
+        { text: "Sobre", icon: "contact_mail", action: "/about" }
       ]
     };
   },
