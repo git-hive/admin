@@ -12,6 +12,7 @@
       slot="activator"
       v-model="time"
       :label="label || 'Time'"
+      :error-messages="errorMessages"
       prepend-icon="access_time"
       readonly
       :rules="rules"
@@ -45,7 +46,7 @@ export default {
     label: String,
     time: String,
     required: Boolean,
-    rules: Array
+    errorMessages: Array
   },
   data: () => ({ modal: false })
 };

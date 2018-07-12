@@ -12,10 +12,9 @@
       slot="activator"
       v-model="date"
       :label="label || 'Date'"
+      :error-messages="errorMessages"
       prepend-icon="event"
       readonly
-      :rules="rules"
-      :required="required"
     ></v-text-field>
     <v-date-picker
       :value="date"
@@ -45,7 +44,7 @@ export default {
     label: String,
     date: String,
     required: Boolean,
-    rules: Array
+    errorMessages: Array
   },
   data: () => ({ modal: false })
 };
