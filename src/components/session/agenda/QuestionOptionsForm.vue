@@ -5,12 +5,11 @@
       label="Título"
       required
     ></v-text-field>
-    <v-text-field
+    <v-textarea
       v-model="content"
       label="Subtítulo"
-      multi-line
       required
-    ></v-text-field>
+    ></v-textarea>
     <v-btn @click="submit">Adicionar opção</v-btn>
   </v-form>
 </template>
