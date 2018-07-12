@@ -6,22 +6,25 @@
       </v-card-title>
       <v-card-text>
         <v-container grid-list-md>
-          <v-form ref="form" @submit="submit" v-model="isValid" lazy-validation>
+          <v-form ref="form" @submit.prevent="submit" v-model="isValid" lazy-validation>
             <v-layout row wrap>
               <v-flex xs12 sm6>
                 <inline-date-picker
+                  ref="startDate"
                   label="Data de início"
                   v-model="startsAtDate"
-                  :rules="startDateRules"
-                  required
+                  v-validate="'required|date_format:YYYY-MM-DD|before:endDate'"
+                  data-vv-name="startDate"
+                  :error-messages="errors.collect('startDate')"
                 />
               </v-flex>
               <v-flex xs12 sm6>
                 <inline-time-picker
                   label="Horário de início"
                   v-model="startsAtTime"
-                  :rules="[v => !!v || 'Campo obrigatório']"
-                  required
+                  v-validate="'required'"
+                  data-vv-name="startTime"
+                  :error-messages="errors.collect('startTime')"
                 />
               </v-flex>
             </v-layout>
@@ -29,18 +32,21 @@
             <v-layout row wrap>
               <v-flex xs12 sm6>
                 <inline-date-picker
+                  ref="endDate"
                   label="Data de término"
                   v-model="endsAtDate"
-                  :rules="endDateRules"
-                  required
+                  v-validate="'required|date_format:YYYY-MM-DD|after:startDate'"
+                  data-vv-name="endDate"
+                  :error-messages="errors.collect('endDate')"
                 />
               </v-flex>
               <v-flex xs12 sm6>
                 <inline-time-picker
                   label="Horário de término"
                   v-model="endsAtTime"
-                  :rules="[v => !!v || 'Campo obrigatório']"
-                  required
+                  v-validate="'required'"
+                  data-vv-name="endTime"
+                  :error-messages="errors.collect('endTime')"
                 />
               </v-flex>
             </v-layout>
@@ -99,7 +105,10 @@
 </template>
 
 <script>
+import VeeValidate from "vee-validate";
+import dictionary from "../../locale/veeValidateDisctionay.js";
 import { mapState } from "vuex";
+
 import InlineDatePicker from "@/components/InlineDatePicker.vue";
 import InlineTimePicker from "@/components/InlineTimePicker.vue";
 import AgendaForm from "@/components/session/agenda/AgendaForm.vue";
@@ -108,6 +117,9 @@ import { addAssociationSession } from "../../firebase/firestore/associations/ses
 
 export default {
   name: "session-form",
+  $_veeValidate: {
+    validator: "new"
+  },
   components: {
     InlineDatePicker,
     InlineTimePicker,
@@ -124,33 +136,28 @@ export default {
     isOrdinary: false,
     agendas: [],
     snackbar: false,
-    snackBarText: "",
-    startDateRules: [
-      v => !!v | "Campo obrigatório",
-      v =>
-        (!!v && new Date(v.split("-")) > new Date()) ||
-        "Deve ser depois de hoje"
-    ],
-    endDateRules: [
-      v => !!v || "Campo obrigatório",
-      v =>
-        (!!v && new Date(v.split("-")) > new Date()) ||
-        "Deve ser depois de hoje"
-    ]
+    snackBarText: ""
   }),
   computed: {
     ...mapState(["selectedAssociation"]),
+    startsAt: function() {
+      return this.getDate(this.startsAtDate, this.startsAtTime);
+    },
+    endsAt: function() {
+      return this.getDate(this.endsAtDate, this.endsAtTime);
+    }
+  },
+  mounted() {
+    this.$validator.localize("pt_BR", dictionary);
   },
   methods: {
     submit() {
-      if (!this.$refs.form.validate()) return;
+      if (!this.$validator.validateAll()) return;
       if (this.agendas.length === 0) {
         this.showSnackBar("Add an agenda first");
         return;
       }
 
-      const startsAt = this.getDate(this.startsAtDate, this.startsAtTime);
-      const endsAt = this.getDate(this.endsAtDate, this.endsAtTime);
       const isGeneral = this.isGeneral;
       const isOrdinary = this.isOrdinary;
       const agendas = this.agendas;
@@ -158,8 +165,8 @@ export default {
       addAssociationSession(this.selectedAssociation.id, {
         ordinary: isOrdinary,
         general: isGeneral,
-        startsAt: Number(startsAt),
-        endsAt: Number(endsAt),
+        startsAt: Number(this.startsAt),
+        endsAt: Number(this.endsAt),
         agendasNum: agendas.length,
         associationRef: this.selectedAssociation.ref,
         status: "future",
