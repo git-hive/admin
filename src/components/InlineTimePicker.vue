@@ -15,7 +15,6 @@
       :error-messages="errorMessages"
       prepend-icon="access_time"
       readonly
-      :rules="rules"
       :required="required"
     ></v-text-field>
     <v-time-picker
