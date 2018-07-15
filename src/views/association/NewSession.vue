@@ -2,12 +2,31 @@
   <v-container>
     <v-card>
       <v-card-title>
-        <span class="headline">Criar assembléia</span>
+        <span class="headline primary--text">Criar assembléia</span>
       </v-card-title>
       <v-card-text>
         <v-container grid-list-md>
-          <v-form ref="form" @submit.prevent="submit" v-model="isValid" lazy-validation>
-            <v-layout row wrap>
+
+          <v-layout>
+            <v-flex md6 text-xs-center>
+              <v-flex xs12>
+                <h1 class="primary--text">Início</h1>
+              </v-flex>
+            </v-flex>
+            <v-flex md6 text-xs-center>
+              <v-flex xs12>
+                <h1 class="primary--text">Término</h1>
+              </v-flex>
+            </v-flex>
+          </v-layout>
+
+          <v-form
+            ref="form"
+            @submit.prevent="submit"
+            v-model="isValid"
+            lazy-validation
+          >
+            <v-layout>
               <v-flex xs12 sm6>
                 <inline-date-picker
                   ref="startDate"
@@ -17,8 +36,6 @@
                   data-vv-name="startDate"
                   :error-messages="errors.collect('startDate')"
                 />
-              </v-flex>
-              <v-flex xs12 sm6>
                 <inline-time-picker
                   label="Horário de início"
                   v-model="startsAtTime"
@@ -27,9 +44,6 @@
                   :error-messages="errors.collect('startTime')"
                 />
               </v-flex>
-            </v-layout>
-
-            <v-layout row wrap>
               <v-flex xs12 sm6>
                 <inline-date-picker
                   ref="endDate"
@@ -39,8 +53,6 @@
                   data-vv-name="endDate"
                   :error-messages="errors.collect('endDate')"
                 />
-              </v-flex>
-              <v-flex xs12 sm6>
                 <inline-time-picker
                   label="Horário de término"
                   v-model="endsAtTime"
@@ -51,22 +63,20 @@
               </v-flex>
             </v-layout>
 
-            <v-layout row wrap>
-              <v-flex xs12 sm6>
-                <v-switch
-                  label="Geral"
-                  v-model="isGeneral"
-                  required
-                ></v-switch>
-              </v-flex>
-              <v-flex xs12 sm6>
-                <v-switch
-                  label="Ordinária"
-                  v-model="isOrdinary"
-                  required
-                ></v-switch>
-              </v-flex>
-            </v-layout>
+            <v-flex xs12>
+              <v-switch
+                label="Geral"
+                v-model="isGeneral"
+                required
+              ></v-switch>
+            </v-flex>
+            <v-flex xs12>
+              <v-switch
+                label="Ordinária"
+                v-model="isOrdinary"
+                required
+              ></v-switch>
+            </v-flex>
 
             <h1 class="headline">Pautas</h1>
 
