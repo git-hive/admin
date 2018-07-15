@@ -78,30 +78,50 @@
               ></v-switch>
             </v-flex>
 
-            <h1 class="headline">Pautas</h1>
+            <v-dialog>
+              <v-flex slot="activator">
+                <v-btn
+                  fab
+                  color="primary ml-0"
+                >
+                  <v-icon>add</v-icon>
+                </v-btn>
+                <span
+                  class="primary--text headline add-agenda-headline"
+                >Adicionar pauta</span>
+              </v-flex>
 
-            <v-expansion-panel class="my-4">
-              <v-expansion-panel-content
-                v-for="(agenda, i) in agendas"
-                :key="i"
-              >
-                <div slot="header">
-                  <h3>{{agenda.title}}</h3>
-                </div>
-                <v-card>
-                  <v-card-text>{{agenda.content}}</v-card-text>
-                  <questions-list :questions="agenda.questions">
-                  </questions-list>
-                  <v-btn color="error" @click="removeAgenda(i)">
-                    Remover pauta
-                  </v-btn>
-                </v-card>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
+              <v-card class="pa-4">
+                <h1 class="headline">Pautas</h1>
 
-            <agenda-form @submit="handleAgendaSubmit"></agenda-form>
+                <v-expansion-panel class="my-4">
+                  <v-expansion-panel-content
+                    v-for="(agenda, i) in agendas"
+                    :key="i"
+                  >
+                    <div slot="header">
+                      <h3>{{agenda.title}}</h3>
+                    </div>
+                    <v-card>
+                      <v-card-text>{{agenda.content}}</v-card-text>
+                      <questions-list :questions="agenda.questions">
+                      </questions-list>
+                      <v-btn color="error" @click="removeAgenda(i)">
+                        Remover pauta
+                      </v-btn>
+                    </v-card>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
 
-            <v-btn type="submit" class="mt-5">Criar assembléia</v-btn>
+                <agenda-form @submit="handleAgendaSubmit"></agenda-form>
+              </v-card>
+            </v-dialog>
+
+            <v-btn
+              v-if="this.agendas.length > 0"
+              type="submit"
+              class="mt-5"
+            >Criar assembléia</v-btn>
           </v-form>
         </v-container>
       </v-card-text>
@@ -115,7 +135,6 @@
 </template>
 
 <script>
-import VeeValidate from "vee-validate";
 import dictionary from "../../locale/veeValidateDisctionay.js";
 import { mapState } from "vuex";
 
@@ -204,3 +223,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.add-agenda-headline {
+  vertical-align: middle;
+}
+</style>
