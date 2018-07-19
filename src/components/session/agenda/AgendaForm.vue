@@ -18,45 +18,40 @@
       @actionClick="removeQuestion"
     ></questions-list>
 
-    <v-btn @click="submit">Adicionar Pauta</v-btn>
-
-    <agenda-question-form @submit="handleQuestionSubmit"></agenda-question-form>
+    <v-btn
+      v-if="questions.length > 0"
+      @click="submit"
+    >Criar Pauta</v-btn>
   </v-form>
 </template>
 
 <script>
 import QuestionsList from "./question/QuestionsList.vue";
-import AgendaQuestionForm from "@/components/session/agenda/AgendaQuestionForm.vue";
 
 export default {
   name: "agenda-form",
+  props: {
+    questions: Array
+  },
   components: {
-    AgendaQuestionForm,
     QuestionsList
   },
   data: () => ({
     isValid: false,
     title: "",
-    content: "",
-    questions: []
+    content: ""
   }),
   methods: {
-    handleQuestionSubmit(question) {
-      this.questions.push(question);
-    },
     submit() {
       this.$emit("submit", {
         title: this.title,
-        content: this.content,
-        questions: this.questions,
-        questionsNum: this.questions.length
+        content: this.content
       });
 
-      this.questions = [];
       this.$refs.agendaForm.reset();
     },
     removeQuestion(index) {
-      this.questions.splice(index, 1);
+      this.$emit("remove-question", index);
     }
   }
 };
