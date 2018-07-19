@@ -1,6 +1,6 @@
 <template>
   <v-flex>
-    <h1 v-if="questions.length !== 0" class="subheading ml-2">Tópicos</h1>
+    <h1 v-if="hasQuestions()" class="subheading ml-2">Tópicos</h1>
 
     <v-list v-for="(question, i) in questions" :key="i">
       <v-list-group>
@@ -32,6 +32,11 @@ export default {
   props: ["questions", "showAction", "actionIcon"],
   components: {
     OptionsList
+  },
+  methods: {
+    hasQuestions() {
+      this.questions && this.questions.length && this.questions.length !== 0;
+    }
   }
 };
 </script>
