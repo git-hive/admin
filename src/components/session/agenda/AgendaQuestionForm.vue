@@ -3,60 +3,76 @@
     <v-text-field
       v-model="question"
       label="Título"
+      v-validate="'required'"
+      data-vv-name="title"
+      :error-messages="errors.collect('title')"
       required
     ></v-text-field>
     <v-textarea
       v-model="info"
       label="Descrição"
+      v-validate="'required'"
+      data-vv-name="description"
+      :error-messages="errors.collect('description')"
       required
     ></v-textarea>
 
-    <options-list
-      :options="options"
-      show-action="true"
-      action-icon="delete"
-      @actionClick="removeOption"
-    ></options-list>
+    <div v-if="options.length > 0">
+      <options-list
+        :options="options"
+        show-action="true"
+        action-icon="delete"
+        @actionClick="removeOption"
+      ></options-list>
 
-    <v-btn @click="submit">Adicionar tópico</v-btn>
-
-    <h1 class="headline my-4">Opções</h1>
-    <question-options-form @submit="addOption"></question-options-form>
+      <v-btn
+        v-if="options.length > 1"
+        @click="submit"
+      >Criar tópico</v-btn>
+    </div>
   </v-form>
 </template>
 
 <script>
 import OptionsList from "./question/OptionsList.vue";
-import QuestionOptionsForm from "@/components/session/agenda/QuestionOptionsForm.vue";
 
 export default {
   name: "agenda-question-form",
+  props: {
+    options: Array
+  },
   components: {
-    QuestionOptionsForm,
     OptionsList
   },
   data: () => ({
-    isValid: false,
     question: "",
-    info: "",
-    options: []
+    info: ""
   }),
   methods: {
-    submit() {
+    async submit() {
+      if (!(await this.formIsValid())) return;
+
       this.$emit("submit", {
         question: this.question,
         info: this.info,
         options: this.options
       });
 
-      this.options = [];
       this.$refs.questionForm.reset();
+      this.clearForm();
     },
-    addOption(option) {
-      this.options.push(option);
+    clearForm() {
+      this.question = "";
+      this.info = "";
+      this.$validator.reset();
     },
     removeOption(index) {
-      this.options.splice(index, 1);
+      this.$emit("remove-option", index);
+    },
+    async formIsValid() {
+      const vValidateValid = await this.$validator.validateAll();
+      const moreThanOneOption = this.options.length > 1;
+      return vValidateValid && moreThanOneOption;
     }
   }
 };
