@@ -78,44 +78,34 @@
               ></v-switch>
             </v-flex>
 
-            <v-dialog>
-              <v-flex slot="activator">
-                <v-btn
-                  fab
-                  color="primary ml-0"
+            <div v-if="agendas.length > 0">
+              <h1 class="headline">Pautas</h1>
+
+              <v-expansion-panel class="my-4">
+                <v-expansion-panel-content
+                  v-for="(agenda, i) in agendas"
+                  :key="i"
                 >
-                  <v-icon>add</v-icon>
-                </v-btn>
-                <span
-                  class="primary--text headline add-agenda-headline"
-                >Adicionar pauta</span>
-              </v-flex>
+                  <div slot="header">
+                    <h3>{{agenda.title}}</h3>
+                  </div>
+                  <v-card>
+                    <v-card-text>{{agenda.content}}</v-card-text>
+                    <questions-list :questions="agenda.questions">
+                    </questions-list>
+                    <v-btn color="error" @click="removeAgenda(i)">
+                      Remover pauta
+                    </v-btn>
+                  </v-card>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </div>
 
-              <v-card class="pa-4">
-                <h1 class="headline">Pautas</h1>
+            <create-agenda-dialog
+              @new-agenda="handleAgendaSubmit"
+            ></create-agenda-dialog>
 
-                <v-expansion-panel class="my-4">
-                  <v-expansion-panel-content
-                    v-for="(agenda, i) in agendas"
-                    :key="i"
-                  >
-                    <div slot="header">
-                      <h3>{{agenda.title}}</h3>
-                    </div>
-                    <v-card>
-                      <v-card-text>{{agenda.content}}</v-card-text>
-                      <questions-list :questions="agenda.questions">
-                      </questions-list>
-                      <v-btn color="error" @click="removeAgenda(i)">
-                        Remover pauta
-                      </v-btn>
-                    </v-card>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-
-                <agenda-form @submit="handleAgendaSubmit"></agenda-form>
-              </v-card>
-            </v-dialog>
+            <br>
 
             <v-btn
               v-if="this.agendas.length > 0"
@@ -140,7 +130,7 @@ import { mapState } from "vuex";
 
 import InlineDatePicker from "@/components/InlineDatePicker.vue";
 import InlineTimePicker from "@/components/InlineTimePicker.vue";
-import AgendaForm from "@/components/session/agenda/AgendaForm.vue";
+import CreateAgendaDialog from "../association/sessions/CreateAgendaDialog";
 import QuestionsList from "@/components/session/agenda/question/QuestionsList.vue";
 import { addAssociationSession } from "../../firebase/firestore/associations/sessions";
 
@@ -152,8 +142,8 @@ export default {
   components: {
     InlineDatePicker,
     InlineTimePicker,
-    AgendaForm,
-    QuestionsList
+    QuestionsList,
+    CreateAgendaDialog
   },
   data: () => ({
     isValid: false,
@@ -223,9 +213,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.add-agenda-headline {
-  vertical-align: middle;
-}
-</style>
