@@ -16,7 +16,7 @@
       :error-messages="errors.collect('subTitle')"
       required
     ></v-textarea>
-    <v-btn color="primary" @click="submit">Criar opção</v-btn>
+    <v-btn @click="submit">Criar opção</v-btn>
   </v-form>
 </template>
 
