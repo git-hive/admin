@@ -28,7 +28,7 @@
           <agenda-form
             :questions="questions"
             @submit="addAgenda"
-            @remove-quesiton="removeQuestion"
+            @remove-question="removeQuestion"
           >
           </agenda-form>
         </v-tab-item>
@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     addAgenda(agenda) {
-      this.$emit("new-agenda", agenda);
+      this.$emit("new-agenda", { ...agenda, questions: this.questions });
       this.clearQuestions();
       this.clearOptions();
       this.dialog = false;
