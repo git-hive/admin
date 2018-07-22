@@ -81,24 +81,10 @@
             <div v-if="agendas.length > 0">
               <h1 class="headline">Pautas</h1>
 
-              <v-expansion-panel class="my-4">
-                <v-expansion-panel-content
-                  v-for="(agenda, i) in agendas"
-                  :key="i"
-                >
-                  <div slot="header">
-                    <h3>{{agenda.title}}</h3>
-                  </div>
-                  <v-card>
-                    <v-card-text>{{agenda.content}}</v-card-text>
-                    <questions-list :questions="agenda.questions">
-                    </questions-list>
-                    <v-btn color="error" @click="removeAgenda(i)">
-                      Remover pauta
-                    </v-btn>
-                  </v-card>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
+              <agendas-list
+                :agendas="agendas"
+                @remove-agenda="removeAgenda"
+              ></agendas-list>
             </div>
 
             <create-agenda-dialog
@@ -131,8 +117,8 @@ import { mapState } from "vuex";
 import InlineDatePicker from "@/components/InlineDatePicker.vue";
 import InlineTimePicker from "@/components/InlineTimePicker.vue";
 import CreateAgendaDialog from "../association/sessions/CreateAgendaDialog";
-import QuestionsList from "@/components/session/agenda/question/QuestionsList.vue";
-import { addAssociationSession } from "../../firebase/firestore/associations/sessions";
+import AgendasList from "@/components/session/agenda/AgendasList.vue";
+import { addAssociationSession } from "@/firebase/firestore/associations/sessions";
 
 export default {
   name: "session-form",
@@ -142,8 +128,8 @@ export default {
   components: {
     InlineDatePicker,
     InlineTimePicker,
-    QuestionsList,
-    CreateAgendaDialog
+    CreateAgendaDialog,
+    AgendasList
   },
   data: () => ({
     isValid: false,
