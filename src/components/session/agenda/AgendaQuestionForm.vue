@@ -21,7 +21,7 @@
       <options-list
         :options="options"
         show-action="true"
-        action-icon="delete"
+        action-icon="delete_forever"
         @actionClick="removeOption"
       ></options-list>
 

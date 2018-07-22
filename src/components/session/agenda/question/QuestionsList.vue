@@ -1,6 +1,6 @@
 <template>
   <v-flex>
-    <h1 v-if="hasQuestions()" class="subheading ml-2">Tópicos</h1>
+    <h1 v-if="hasQuestions()" class="subheading ma-2 display-1">Tópicos</h1>
 
     <v-list v-for="(question, i) in questions" :key="i">
       <v-list-group>
@@ -12,7 +12,7 @@
 
           <v-list-tile-action
             v-if="showAction"
-            @click="$emit('actionClick', i)"
+            @click.stop="$emit('action-click', i)"
           >
             <v-icon>{{actionIcon}}</v-icon>
           </v-list-tile-action>
@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     hasQuestions() {
-      this.questions && this.questions.length && this.questions.length !== 0;
+      return !!(this.questions && this.questions.length);
     }
   }
 };

@@ -14,8 +14,8 @@
     <questions-list
       :questions="questions"
       show-action="true"
-      action-icon="delete"
-      @actionClick="removeQuestion"
+      action-icon="delete_forever"
+      @action-click="removeQuestion"
     ></questions-list>
 
     <v-btn
