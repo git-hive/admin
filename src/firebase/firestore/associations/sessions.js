@@ -56,19 +56,22 @@ export function getAssociationSessionSnap(associationID, sessionID) {
  * @param {Object} session New session data
  */
 export async function addAssociationSession(associationID, session) {
-  console.log("[addAssociationSession]", session);
-
   const agendas = cutOut(session, "agendas");
 
   const newSessionRef = await sessionsRef(associationID).add(session);
   const agendasColRef = agendasRef(newSessionRef);
 
   agendas.forEach(async agenda => {
+    agenda.sessionRef = newSessionRef;
     const questions = cutOut(agenda, "questions");
     const newAgendaRef = await agendasColRef.add(agenda);
     const questionsColRef = questionsRef(newAgendaRef);
 
-    questions.forEach(async question => questionsColRef.add(question));
+    questions.forEach(async question => {
+      question.sessionRef = newSessionRef;
+      question.agendaRef = newAgendaRef;
+      questionsColRef.add(question);
+    });
   });
 }
 

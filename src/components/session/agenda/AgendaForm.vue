@@ -45,7 +45,12 @@ export default {
     submit() {
       this.$emit("submit", {
         title: this.title,
-        content: this.content
+        content: this.content,
+        forumPostRef: null,
+        questionsNum: this.questions.length,
+        requestRef: null,
+        sessionRef: null,
+        suggestedByRef: null
       });
 
       this.$refs.agendaForm.reset();

@@ -55,7 +55,10 @@ export default {
       this.$emit("submit", {
         question: this.question,
         info: this.info,
-        options: this.options
+        options: this.options,
+        agendaRef: null,
+        sessionRef: null,
+        winningOption: null
       });
 
       this.$refs.questionForm.reset();
