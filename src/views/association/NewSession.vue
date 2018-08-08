@@ -178,6 +178,7 @@ export default {
         agendas
       });
 
+      this.agendas = [];
       this.$refs.form.reset();
     },
     getDate(date, time) {
