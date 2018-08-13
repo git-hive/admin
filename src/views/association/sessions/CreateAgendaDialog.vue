@@ -46,8 +46,7 @@
           </agenda-question-form>
         </v-tab-item>
         <v-tab-item id="option">
-          <question-options-form @submit="addOption">
-          </question-options-form>
+          <question-options-form @submit="addOption" />
         </v-tab-item>
       </v-tabs>
     </v-card>
