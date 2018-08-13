@@ -7,7 +7,10 @@
           <v-list-tile-title>{{ agenda.title }}</v-list-tile-title>
           <v-list-tile-sub-title>{{agenda.content}}</v-list-tile-sub-title>
         </v-list-tile-content>
-        <v-list-tile-action @click.stop="$emit('remove-agenda', i)">
+        <v-list-tile-action
+          v-if="showAction"
+          @click.stop="$emit('remove-agenda', i)"
+        >
           <v-icon>
             delete_forever
           </v-icon>
@@ -25,6 +28,7 @@ import QuestionsList from "@/components/session/agenda/question/QuestionsList.vu
 export default {
   name: "agendas-list",
   props: {
+    showAction: Boolean,
     agendas: Array
   },
   components: { QuestionsList }

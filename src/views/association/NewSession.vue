@@ -84,6 +84,7 @@
               <agendas-list
                 :agendas="agendas"
                 @remove-agenda="removeAgenda"
+                show-action
               ></agendas-list>
             </div>
 
