@@ -16,6 +16,19 @@ export async function getSnapsFromRefArray(refs) {
 }
 
 /**
+ * Gets all document from the collection reference provided
+ *
+ * @param {firestore.CollectionReference} collectionReference Self descriptive
+ * @returns {[firestore.DocumentSnapshot]}
+ */
+export async function getDocsFromCollection(collectionReference) {
+  const querySnap = await collectionReference.get();
+  const docs = [];
+  querySnap.forEach(doc => docs.push(doc));
+  return docs;
+}
+
+/**
  * Gets the data from a DocumentSnapshot maintaining the
  * DocumentReference and ID
  *
