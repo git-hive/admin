@@ -14,11 +14,12 @@
                   :key="session.id"
                 >
                   <div slot="header">
-                    {{formatDate( session.startsAt )}} -
+                    {{formatDate( session.startsAt )}} à
                     {{formatDate(session.endsAt)}}
-                    <v-chip>{{ session.general && 'Geral' }}</v-chip>
-                    <v-chip>{{ session.ordinary && 'Ordinária' }}</v-chip>
+                    <v-chip v-if="session.general">Geral</v-chip>
+                    <v-chip v-if="session.ordinary">Ordinária</v-chip>
                   </div>
+
                   <v-card>
                     <v-card-text>
                       <h1>Início: {{formatDateTime(session.startsAt)}}</h1>
