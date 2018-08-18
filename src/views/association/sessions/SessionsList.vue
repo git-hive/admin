@@ -22,14 +22,38 @@
 
                   <v-card>
                     <v-card-text>
-                      <h1>Início: {{formatDateTime(session.startsAt)}}</h1>
-                      <h1>Término: {{formatDateTime(session.endsAt)}}</h1>
-                      <h1>Número de pautas: {{session.agendasNum }}</h1>
-                      <h1>Situação: {{translateStatus(session.status)}}</h1>
-                      <h1>Geral: {{session.general ? 'Sim' : 'Não'}}</h1>
-                      <h1>Ordinária: {{session.orinary ? 'Sim' : 'Não'}}</h1>
+                      <v-layout class="my-2">
+                        <v-flex xs6 class="text-xm-center">
+                          <v-text-field
+                            label="Início"
+                            :value="formatDateTime(session.startsAt)"
+                            readonly
+                          ></v-text-field>
+                        </v-flex>
+                        <v-flex xs6 class="text-xm-center">
+                          <v-text-field
+                            label="Término"
+                            :value="formatDateTime(session.endsAt)"
+                            readonly
+                          ></v-text-field>
+                        </v-flex>
+                      </v-layout>
+                      <v-layout class="my-2" justify-start row>
+                        <v-checkbox
+                          input-value="session.general"
+                          color="primary"
+                          label="Geral"
+                          disabled
+                        ></v-checkbox>
+                        <v-checkbox
+                          input-value="session.ordinary"
+                          color="primary"
+                          label="Ordinária"
+                          disabled
+                        ></v-checkbox>
+                      </v-layout>
 
-                      <h1 class="headline">Pautas</h1>
+                      <h1 class="headline">Pautas ({{ session.agendasNum }})</h1>
                       <agendas-list :agendas="session.agendas" />
                     </v-card-text>
                   </v-card>
