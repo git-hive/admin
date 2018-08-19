@@ -34,3 +34,11 @@ export default {
   }
 };
 </script>
+
+<style scopped>
+canvas {
+  width: 100% !important;
+  max-width: 800px;
+  height: auto !important;
+}
+</style>
