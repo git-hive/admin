@@ -18,7 +18,10 @@
           </v-list-tile-action>
         </v-list-tile>
 
-        <pie-chart :data="chartDataAdapter(question.options)"></pie-chart>
+        <pie-chart
+          v-if="votesSum(question.options) > 0"
+          :data="chartDataAdapter(question.options)"
+        ></pie-chart>
 
         <options-list :options="question.options"></options-list>
       </v-list-group>
@@ -53,6 +56,9 @@ export default {
           }
         ]
       };
+    },
+    votesSum: function(options) {
+      return options.reduce((sum, opt) => (sum += opt.score), 0);
     }
   }
 };
