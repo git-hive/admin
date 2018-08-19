@@ -1,6 +1,6 @@
 <template>
   <v-flex>
-    <h1 v-if="hasQuestions()" class="subheading ma-2 display-1">Tópicos</h1>
+    <h1 v-if="hasQuestions" class="subheading ma-2 display-1">Tópicos</h1>
 
     <v-list v-for="(question, i) in questions" :key="i">
       <v-list-group>
@@ -33,7 +33,7 @@ export default {
   components: {
     OptionsList
   },
-  methods: {
+  computed: {
     hasQuestions() {
       return !!(this.questions && this.questions.length);
     }
