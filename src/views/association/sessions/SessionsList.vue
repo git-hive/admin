@@ -70,8 +70,8 @@
 <script>
 import { mapState } from "vuex";
 import { sessionsRef } from "@/firebase/firestore/associations/sessions";
-import { agendasRef } from "@/firebase/firestore/associations/agendas";
-import { questionsRef } from "@/firebase/firestore/associations/questions";
+import { agendasRef } from "@/firebase/firestore/associations/sessions/agendas";
+import { questionsRef } from "@/firebase/firestore/associations/sessions/agendas/questions";
 import { getDocsFromCollection } from "@/firebase/firestore/helpers";
 import AgendasList from "@/components/session/agenda/AgendasList.vue";
 

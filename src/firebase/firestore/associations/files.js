@@ -1,6 +1,6 @@
 import { firestore, storage } from "firebase";
 
-import { associationRef } from "./associations";
+import { associationRef } from "@/firebase/firestore/associations";
 
 const db = firestore();
 const storageRef = storage().ref();
@@ -17,11 +17,18 @@ function guid() {
       .substring(1);
   }
   return (
-    s4() + s4() + "-" +
-    s4() + "-" +
-    s4() + "-" +
-    s4() + "-" +
-    s4() + s4() + s4()
+    s4() +
+    s4() +
+    "-" +
+    s4() +
+    "-" +
+    s4() +
+    "-" +
+    s4() +
+    "-" +
+    s4() +
+    s4() +
+    s4()
   );
 }
 
@@ -174,5 +181,5 @@ export async function uploadAssociationFile(
       alert("SOMETHING GOES WRONG DURING FILE UPLOAD");
       console.error("Error during file uploading", error);
     }
-  )
+  );
 }

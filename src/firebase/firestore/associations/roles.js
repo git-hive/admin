@@ -1,6 +1,6 @@
 import { firestore } from "firebase";
 
-import { associationRef } from "@/firebase/firestore/associations/associations";
+import { associationRef } from "@/firebase/firestore/associations";
 
 const ROLES_COLLECTION = "roles";
 

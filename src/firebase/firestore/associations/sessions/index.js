@@ -1,8 +1,8 @@
 import { firestore } from "firebase";
 
-import { associationRef } from "./associations";
-import { agendasRef } from "./agendas";
-import { questionsRef, optionsRef } from "./questions";
+import { associationRef } from "@/firebase/firestore/associations";
+import { agendasRef } from "@/firebase/firestore/associations/sessions/agendas";
+import { questionsRef } from "@/firebase/firestore/associations/sessions/agendas/questions";
 
 const db = firestore();
 db.settings({ timestampsInSnapshots: true });

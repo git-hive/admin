@@ -1,6 +1,6 @@
 import { firestore } from "firebase";
 
-import { associationRef } from "./associations";
+import { associationRef } from "@/firebase/firestore/associations";
 
 const MEMBER_REQUESTS_COLLECTION = "ingressRequests";
 
