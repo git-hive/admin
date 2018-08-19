@@ -72,6 +72,7 @@ import { mapState } from "vuex";
 import { sessionsRef } from "@/firebase/firestore/associations/sessions";
 import { agendasRef } from "@/firebase/firestore/associations/sessions/agendas";
 import { questionsRef } from "@/firebase/firestore/associations/sessions/agendas/questions";
+import { getAllVotesSnaps } from "@/firebase/firestore/associations/sessions/agendas/questions/votes";
 import { getDocsFromCollection } from "@/firebase/firestore/helpers";
 import AgendasList from "@/components/session/agenda/AgendasList.vue";
 
@@ -130,16 +131,6 @@ export default {
       const d = new Date(timestamp);
       return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
     },
-    translateStatus(status) {
-      switch (status) {
-        case "ended":
-          return "terminada";
-        case "current":
-          return "corrente";
-        case "future":
-          return "futura";
-      }
-    },
     async getSessionAgendasWithQuestions(session) {
       const agendasSnaps = await getDocsFromCollection(agendasRef(session.ref));
       const agendas = [];
@@ -147,9 +138,19 @@ export default {
       agendasSnaps.forEach(async agenda => {
         const questionsSnaps =
           await getDocsFromCollection(questionsRef(agenda.ref));
+
+        const questions = []
+
+        questionsSnaps.forEach(async question => {
+          questions.push({
+            ...question.data(),
+            votes: (await getAllVotesSnaps(question.ref)).map(v => v.data())
+          })
+        });
+
         agendas.push({
           ...agenda.data(),
-          questions: questionsSnaps.map(q => q.data())
+          questions: questions,
         });
       });
 
