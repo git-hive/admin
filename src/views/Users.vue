@@ -16,7 +16,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { getAllUserSnaps } from "@/firebase/firestore/users";
+import { getAllAssociationUsersSnaps } from "@/firebase/firestore/users";
 
 export default {
   data() {
@@ -29,11 +29,11 @@ export default {
     this.fetchAndSetUsers();
   },
   computed: {
-    ...mapState(["user"])
+    ...mapState(["user", "selectedAssociation"])
   },
   methods: {
     fetchAndSetUsers() {
-      getAllUserSnaps()
+      getAllAssociationUsersSnaps(this.selectedAssociation.ref)
         .then(users => {
           this.users = users;
         })

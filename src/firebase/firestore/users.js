@@ -1,5 +1,7 @@
 import { firestore } from "firebase";
 
+import { getAssociationRolesRef } from "@/firebase/firestore/associations/roles";
+
 const db = firestore();
 db.settings({ timestampsInSnapshots: true });
 const USERS_COLLECTION = "users";
@@ -29,6 +31,27 @@ export async function getAllUserSnaps() {
   const docs = [];
   querySnap.forEach(doc => docs.push(doc));
   return docs;
+}
+
+/**
+ * Fetches all users that belongs to the provided association
+ *
+ * @param {firestore.DocumentReference} associationRef Self descriptive
+ */
+export async function getAllAssociationUsersSnaps(associationRef) {
+  const rolesQuery = await getAssociationRolesRef(associationRef.id).get();
+  const usersDocs = [];
+  rolesQuery.forEach(async roleDoc => {
+    const usersQuery = await usersRef()
+      .where("associations", "array-contains", {
+        associationRef,
+        roleRef: roleDoc.ref
+      })
+      .get();
+    usersQuery.forEach(userDoc => usersDocs.push(userDoc));
+  });
+
+  return usersDocs;
 }
 
 /**
