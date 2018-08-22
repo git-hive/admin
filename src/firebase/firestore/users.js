@@ -38,7 +38,7 @@ export async function getAllUserSnaps() {
  *
  * @param {firestore.DocumentReference} associationRef Self descriptive
  */
-export async function getAllAssociationUsersSnaps(associationRef) {
+export async function getAllAssociationUsersDocs(associationRef) {
   const rolesQuery = await getAssociationRolesRef(associationRef.id).get();
   const usersDocs = [];
   rolesQuery.forEach(async roleDoc => {
@@ -52,6 +52,33 @@ export async function getAllAssociationUsersSnaps(associationRef) {
   });
 
   return usersDocs;
+}
+
+/**
+ * Fetches all users that belongs to the provided association
+ *
+ * @param {firestore.DocumentReference} associationRef Self descriptive
+ */
+export async function getAllAssociationUsersDocsWithRoles(associationRef) {
+  const rolesQuery = await getAssociationRolesRef(associationRef.id).get();
+  const usersWithRoles = [];
+
+  rolesQuery.forEach(async roleDoc => {
+    const usersQuery = await usersRef()
+      .where("associations", "array-contains", {
+        associationRef,
+        roleRef: roleDoc.ref
+      })
+      .get();
+    usersQuery.forEach(userDoc =>
+      usersWithRoles.push({
+        userDoc: userDoc,
+        roleDoc
+      })
+    );
+  });
+
+  return usersWithRoles;
 }
 
 /**
