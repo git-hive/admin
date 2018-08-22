@@ -1,13 +1,20 @@
 <template>
   <v-container elevation-4 class="pa-0">
     <v-list>
-      <v-list-tile v-for="user in users" :key="user.id" @click="() => {}">
+      <v-list-tile
+        v-for="({ userDoc, roleDoc }) in usersWithRoles"
+        :key="userDoc.id"
+        @click="() => {}"
+      >
         <v-list-tile-content>
-          <v-list-tile-title>{{user.get("email")}}</v-list-tile-title>
+          <v-list-tile-title>
+            {{userDoc.get("email")}}
+            <span class="caption">({{roleDoc.get('name')}})</span>
+          </v-list-tile-title>
         </v-list-tile-content>
 
         <v-list-tile-avatar>
-          <img :src="user.get('photoUrl')">
+          <img :src="userDoc.get('photoUrl')">
         </v-list-tile-avatar>
       </v-list-tile>
     </v-list>
@@ -16,12 +23,12 @@
 
 <script>
 import { mapState } from "vuex";
-import { getAllAssociationUsersSnaps } from "@/firebase/firestore/users";
+import { getAllAssociationUsersDocsWithRoles } from "@/firebase/firestore/users";
 
 export default {
   data() {
     return {
-      users: []
+      usersWithRoles: []
     };
   },
 
@@ -33,9 +40,9 @@ export default {
   },
   methods: {
     fetchAndSetUsers() {
-      getAllAssociationUsersSnaps(this.selectedAssociation.ref)
-        .then(users => {
-          this.users = users;
+      getAllAssociationUsersDocsWithRoles(this.selectedAssociation.ref)
+        .then(usersWithRoles => {
+          this.usersWithRoles = usersWithRoles;
         })
         .catch(err => {
           throw new Error(err);
