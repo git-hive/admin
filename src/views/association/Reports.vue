@@ -5,7 +5,7 @@
         <v-btn slot="activator" color="primary" fixed fab bottom right>
           <v-icon>add</v-icon>
         </v-btn>
-        <span>Create report</span>
+        <span>Criar informe</span>
       </v-tooltip>
 
     <report-form @submit="handleReportSubmit"/>
@@ -13,7 +13,7 @@
     </v-dialog>
 
     <v-tabs fixed-tabs>
-      <v-tab>Reports</v-tab>
+      <v-tab>Informes</v-tab>
       <v-tab-item>
         <v-list>
           <v-list-tile v-for="report in reports" :key="report.id" @click="() => {}">
