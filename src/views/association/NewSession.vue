@@ -112,7 +112,6 @@
 </template>
 
 <script>
-import dictionary from "../../locale/veeValidateDisctionay.js";
 import { mapState } from "vuex";
 
 import InlineDatePicker from "@/components/InlineDatePicker.vue";
@@ -152,9 +151,6 @@ export default {
     endsAt: function() {
       return this.getDate(this.endsAtDate, this.endsAtTime);
     }
-  },
-  mounted() {
-    this.$validator.localize("pt_BR", dictionary);
   },
   methods: {
     submit() {
