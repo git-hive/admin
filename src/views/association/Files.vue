@@ -5,11 +5,11 @@
         <v-btn slot="activator" color="primary" fixed fab bottom right>
           <v-icon>add</v-icon>
         </v-btn>
-        <span>Upload file</span>
+        <span>Adicionar arquivo</span>
       </v-tooltip>
 
       <file-form @submit="handleFileUpload"/>
-      
+
     </v-dialog>
 
     <v-dialog
@@ -31,7 +31,7 @@
     </v-dialog>
 
     <v-tabs fixed-tabs>
-      <v-tab>Files</v-tab>
+      <v-tab>Arquivos</v-tab>
       <v-tab-item>
         <v-list>
           <v-list-tile v-for="file in files" :key="file.id" @click="() => {}">
@@ -91,7 +91,7 @@ export default {
       this.progress_bar = true;
       await uploadAssociationFile(file, file_name, this.selectedAssociation.id);
       this.fetchFilesAndSet();
-      this.progress_bar = false; 
+      this.progress_bar = false;
     },
     async fetchFilesAndSet() {
       this.files = await getAllAssociationFileSnaps(this.selectedAssociation.id);

@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      <span class="headline">Files</span>
+      <span class="headline">Novo arquivo</span>
     </v-card-title>
     <v-card-text>
       <v-container grid-list-md>
@@ -10,7 +10,7 @@
             <v-flex xs12 sm12>
               <v-text-field
                 v-model="file_name"
-                label="File name"
+                label="Nome"
                 required
               ></v-text-field>
             </v-flex>
@@ -20,7 +20,7 @@
               <input type="file" @change="handleFileChange" required>
             </v-flex>
           </v-layout>
-          <v-btn @click="submit">Submit</v-btn>
+          <v-btn @click="submit">Salvar</v-btn>
         </v-form>
       </v-container>
     </v-card-text>
