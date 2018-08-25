@@ -15,7 +15,7 @@
 
     <v-snackbar v-model="snackbar">
       {{snackBarText}}
-      <v-btn flat color="pink" @click.native="snackbar = false">Close</v-btn>
+      <v-btn flat color="pink" @click.native="snackbar = false">Fechar</v-btn>
     </v-snackbar>
   </v-app>
 </template>
@@ -40,7 +40,7 @@ export default {
       snackBarTimeOut: 2000,
       drawerMenuItems: [
         { text: "Início", icon: "home", action: "/" },
-        { text: "Users", icon: "people", action: "/users" },
+        { text: "Usuários", icon: "people", action: "/users" },
         {
           text: "Solicitações de Membros",
           icon: "supervised_user_circle",
@@ -73,7 +73,7 @@ export default {
           ]
         },
         {
-          text: "Avisos",
+          text: "Informes",
           icon: "announcement",
           action: "/association/reports"
         },
