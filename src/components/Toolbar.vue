@@ -8,7 +8,7 @@
         v-if="!user"
         @click="$emit('sign-in')"
         flat
-      >Sign In</v-btn>
+      >Entrar</v-btn>
       <v-menu v-else offset-y>
         <v-btn
           flat
@@ -16,7 +16,7 @@
         >{{user.displayName}}</v-btn>
         <v-list>
           <v-list-tile @click.stop="$emit('sign-out')">
-            <v-list-tile-title>Sign Out</v-list-tile-title>
+            <v-list-tile-title>Sair</v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu>
