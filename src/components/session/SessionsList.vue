@@ -7,6 +7,14 @@
       <v-tabs-items>
         <v-tab-item>
           <v-card flat>
+            <v-progress-linear
+              v-if="isFetchingSessions"
+              :indeterminate="true"
+            />
+            <div
+              v-if="!isFetchingSessions && !hasSessions"
+              class="headline pa-4"
+            >Nenhuma Sessão! 😯</div>
             <v-list two-line subheader>
               <v-expansion-panel popout>
                 <v-expansion-panel-content
@@ -85,20 +93,26 @@ export default {
   data: () => ({
     sessions: [],
     agendas: [],
-    tab: "current"
+    tab: "current",
+    isFetchingSessions: false
   }),
   computed: {
     ...mapState(["selectedAssociation"]),
     filteredSessions: function() {
       return this.sessions.filter(s => s.status === this.statusFilter);
+    },
+    hasSessions: function() {
+      return this.filteredSessions.length !== 0;
     }
   },
   mounted() {
     this.addAssociationsSnapListener();
+    this.isFetchingSessions = true;
   },
   methods: {
     addAssociationsSnapListener() {
       sessionsRef(this.selectedAssociation.id).onSnapshot(snapshot => {
+        this.isFetchingSessions = false
         snapshot.docChanges().forEach(async change => {
           if (change.type === "added") {
             this.sessions.push({
@@ -160,6 +174,3 @@ export default {
   }
 };
 </script>
-
-<style>
-</style>
