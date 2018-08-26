@@ -9,7 +9,6 @@ import CurrentSessions from "@/views/association/sessions/CurrentSessions.vue";
 import NewSession from "@/views/association/NewSession.vue";
 import Reports from "@/views/association/Reports.vue";
 import Files from "@/views/association/Files.vue";
-import About from "@/views/About.vue";
 import { routeIsPublic, userIsLoggedIn } from "./route-helpers";
 
 Vue.use(Router);
@@ -60,11 +59,6 @@ const router = new Router({
       path: "/association/files",
       name: "association.files",
       component: Files
-    },
-    {
-      path: "/about",
-      name: "about",
-      component: About
     }
   ]
 });

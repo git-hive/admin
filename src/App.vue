@@ -77,8 +77,7 @@ export default {
           icon: "announcement",
           action: "/association/reports"
         },
-        { text: "Arquivos", icon: "folder", action: "/association/files" },
-        { text: "Sobre", icon: "contact_mail", action: "/about" }
+        { text: "Arquivos", icon: "folder", action: "/association/files" }
       ]
     };
   },
