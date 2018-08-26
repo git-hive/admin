@@ -1,6 +1,10 @@
 <template>
   <v-container elevation-4 class="pa-0">
-    <v-list>
+    <v-progress-linear
+      v-if="isFetchingUsers"
+      :indeterminate="true"
+    />
+    <v-list v-if="hasUsers">
       <v-list-tile
         v-for="({ userDoc, roleDoc }) in usersWithRoles"
         :key="userDoc.id"
@@ -18,6 +22,10 @@
         </v-list-tile-avatar>
       </v-list-tile>
     </v-list>
+    <div
+      v-if="!isFetchingUsers && !hasUsers"
+      class="headline pa-4"
+    >Nenhum usuário cadastrado! 😯</div>
   </v-container>
 </template>
 
@@ -28,7 +36,8 @@ import { getAllAssociationUsersDocsWithRoles } from "@/firebase/firestore/users"
 export default {
   data() {
     return {
-      usersWithRoles: []
+      usersWithRoles: undefined,
+      isFetchingUsers: true
     };
   },
 
@@ -36,15 +45,20 @@ export default {
     this.fetchAndSetUsers();
   },
   computed: {
-    ...mapState(["user", "selectedAssociation"])
+    ...mapState(["user", "selectedAssociation"]),
+    hasUsers: function() {
+      return this.usersWithRoles;
+    }
   },
   methods: {
     fetchAndSetUsers() {
       getAllAssociationUsersDocsWithRoles(this.selectedAssociation.ref)
         .then(usersWithRoles => {
           this.usersWithRoles = usersWithRoles;
+          this.isFetchingUsers = false;
         })
         .catch(err => {
+          this.isFetchingUsers = false;
           throw new Error(err);
         });
     }
