@@ -14,7 +14,7 @@
                   :key="session.id"
                 >
                   <div slot="header">
-                    {{formatDate( session.startsAt )}} à
+                    {{formatDate(session.startsAt)}} à
                     {{formatDate(session.endsAt)}}
                     <v-chip v-if="session.general">Geral</v-chip>
                     <v-chip v-if="session.ordinary">Ordinária</v-chip>
@@ -53,7 +53,7 @@
                         ></v-checkbox>
                       </v-layout>
 
-                      <h1 class="headline">Pautas ({{ session.agendasNum }})</h1>
+                      <h1 class="headline">Pautas ({{session.agendasNum}})</h1>
                       <agendas-list :agendas="session.agendas" />
                     </v-card-text>
                   </v-card>
@@ -136,21 +136,22 @@ export default {
       const agendas = [];
 
       agendasSnaps.forEach(async agenda => {
-        const questionsSnaps =
-          await getDocsFromCollection(questionsRef(agenda.ref));
+        const questionsSnaps = await getDocsFromCollection(
+          questionsRef(agenda.ref)
+        );
 
-        const questions = []
+        const questions = [];
 
         questionsSnaps.forEach(async question => {
           questions.push({
             ...question.data(),
             votes: (await getAllVotesSnaps(question.ref)).map(v => v.data())
-          })
+          });
         });
 
         agendas.push({
           ...agenda.data(),
-          questions: questions,
+          questions: questions
         });
       });
 

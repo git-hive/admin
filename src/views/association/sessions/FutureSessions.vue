@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import SessionsList from "./SessionsList.vue";
+import SessionsList from "@/components/session/SessionsList.vue";
 
 export default {
   name: "future-sessions",
